@@ -1,16 +1,54 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+const LPS = require('lps');
 
 let win, serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
+
+ipcMain.on('view-ready', (event, arg) => {
+  let sender = event.sender;
+  
+  LPS.load(__dirname + '/../lps/examples/studio.lps')
+    .then((engine) => {
+      ipcMain.once('view-destroyed', (event, arg) => {
+        console.log('destroyed, terminate');
+        engine.terminate();
+      });
+      
+      ipcMain.on('clicked', (event, arg) => {
+        console.log('observe');
+        let theta = {
+          X: new LPS.Value(arg.x),
+          Y: new LPS.Value(arg.y)
+        };
+        let observation = LPS.literal('click(X, Y)').substitute(theta);
+        console.log('' + observation);
+        engine.observe(observation);
+      });
+      
+      engine.define('draw_circle/5', (x, y, radius, t1, t2) => {
+        console.log('draw circle!!!');
+        sender.send('draw-circle', { x: x.evaluate(), y: y.evaluate(), radius: radius.evaluate() });
+        return [ { theta: {} } ];
+      });
+
+      engine.on('postCycle', () => {
+        console.log('TIME ' + engine.getCurrentTime());
+      });
+      
+      engine.run();
+    });
+});
+
 function createWindow() {
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
-
+  
   // Create the browser window.
   win = new BrowserWindow({
     x: 0,
@@ -40,6 +78,7 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+  
 }
 
 try {

@@ -18,7 +18,8 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   private timer: NodeJS.Timer;
   
   @Input() objects: Array<CanvasObject> = new Array<CanvasObject>();
-  @Output() click = new EventEmitter<Object>();
+  @Output() clicked = new EventEmitter<Object>();
+  @Output() ready = new EventEmitter();
 
   constructor() {
   }
@@ -34,6 +35,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mainCanvas.nativeElement.width = 400;
       this.mainCanvas.nativeElement.height = 400;
       this.context = (<HTMLCanvasElement>this.mainCanvas.nativeElement).getContext('2d');
+      this.ready.emit();
     }, 0);
   }
   
@@ -41,8 +43,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     let x = event.offsetX;
     let y = event.offsetY;
     
-    this.objects.push(new Circle(x, y, 5));
-    this.click.emit({ x: x, y: y });
+    this.clicked.emit({ x: x, y: y });
   }
   
   private canvasDraw() {
