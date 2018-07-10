@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       let image = new Image();
       image.src = arg.url;
       this.images[arg.id] = image;
-      console.log(image);
     });
     
     ipcRenderer.on('time-update', (event, arg) => {
