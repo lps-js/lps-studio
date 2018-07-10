@@ -14,8 +14,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('mainCanvas') mainCanvas: ElementRef;
   public context: CanvasRenderingContext2D;
   
-  private refreshInterval: number = 50;
-  private timer: NodeJS.Timer;
+  private refreshInterval: number = 20;
   
   @Input() objects: Array<CanvasObject> = new Array<CanvasObject>();
   @Output() clicked = new EventEmitter<Object>();
@@ -24,11 +23,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor() {
   }
 
-  ngOnInit() {
-    this.timer = setInterval(() => {
-      this.canvasDraw();
-    }, this.refreshInterval);
-  }
+  ngOnInit() {}
   
   ngAfterViewInit() {
     setTimeout(() => {
@@ -36,6 +31,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mainCanvas.nativeElement.height = 400;
       this.context = (<HTMLCanvasElement>this.mainCanvas.nativeElement).getContext('2d');
       this.ready.emit();
+      this.canvasDraw();
     }, 0);
   }
   
@@ -50,6 +46,9 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.context === null) {
       return;
     }
+    requestAnimationFrame(() => {
+      this.canvasDraw();
+    });
     this.context.clearRect(0, 0, this.mainCanvas.nativeElement.width, this.mainCanvas.nativeElement.height);
     this.objects.forEach((obj) => {
       obj.draw(this.context);
@@ -57,7 +56,6 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    clearInterval(this.timer);
   }
 
 }
