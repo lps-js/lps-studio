@@ -14,6 +14,18 @@ ipcMain.on('view-ready', (event, arg) => {
   
   LPS.load(__dirname + '/../lps/examples/studio.lps')
     .then((engine) => {
+      let queryResult = engine.query(LPS.literal('load_image(Id, Url)'));
+      queryResult.forEach((imageTuple) => {
+        let theta = imageTuple.theta;
+        if (!(theta.Id instanceof LPS.Value) || !(theta.Url instanceof LPS.Value)) {
+          return;
+        }
+        let id = theta.Id.evaluate();
+        let url = theta.Url.evaluate();
+        sender.send('load-image', { id: id, url: url });
+      });
+      console.log(queryResult);
+        
       ipcMain.once('view-destroyed', (event, arg) => {
         console.log('destroyed, terminate');
         engine.terminate();
@@ -30,14 +42,66 @@ ipcMain.on('view-ready', (event, arg) => {
         engine.observe(observation);
       });
       
-      engine.define('draw_circle/5', (x, y, radius, t1, t2) => {
-        console.log('draw circle!!!');
-        sender.send('draw-circle', { x: x.evaluate(), y: y.evaluate(), radius: radius.evaluate() });
-        return [ { theta: {} } ];
+      engine.define('draw_image', (id, x, y, width, height, imageId, t1, t2) => {
+        let data = {
+          id: id.evaluate(),
+          x: x.evaluate(),
+          y: y.evaluate(),
+          width: width.evaluate(),
+          height: height.evaluate(),
+          imageId: imageId.evaluate()
+        };
+        sender.send('draw-image', data);
+        let theta = {};
+        if (t2 instanceof LPS.Variable) {
+          let time1 = t1.evaluate();
+          let time2 = new LPS.Value(time1 + 1);
+          theta[t2.evaluate()] = time2;
+        }
+        return [ { theta: theta } ];
+      });
+      
+      engine.define('draw_circle', (id, x, y, radius, t1, t2) => {
+        let data = {
+          id: id.evaluate(),
+          x: x.evaluate(),
+          y: y.evaluate(),
+          radius: radius.evaluate()
+        };
+        sender.send('draw-circle', data);
+        let theta = {};
+        if (t2 instanceof LPS.Variable) {
+          let time1 = t1.evaluate();
+          let time2 = new LPS.Value(time1 + 1);
+          theta[t2.evaluate()] = time2;
+        }
+        return [ { theta: theta } ];
+      });
+      
+      engine.define('move', (id, x, y, t1, t2) => {
+        let data = {
+          id: id.evaluate(),
+          x: x.evaluate(),
+          y: y.evaluate(),
+          cycleInterval: engine.getCycleInterval()
+        };
+        sender.send('move', data);
+        let theta = {};
+        if (t2 instanceof LPS.Variable) {
+          let time1 = t1.evaluate();
+          let time2 = new LPS.Value(time1 + 1);
+          theta[t2.evaluate()] = time2;
+        }
+        return [ { theta: theta } ];
       });
 
       engine.on('postCycle', () => {
         console.log('TIME ' + engine.getCurrentTime());
+        sender.send('time-update', { time: engine.getCurrentTime() });
+      });
+      
+      engine.on('done', () => {
+        sender.send('done');
       });
       
       engine.run();
