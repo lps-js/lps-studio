@@ -24,7 +24,6 @@ ipcMain.on('view-ready', (event, arg) => {
         let url = theta.Url.evaluate();
         sender.send('load-image', { id: id, url: url });
       });
-      console.log(queryResult);
         
       ipcMain.once('view-destroyed', (event, arg) => {
         console.log('destroyed, terminate');
@@ -32,13 +31,11 @@ ipcMain.on('view-ready', (event, arg) => {
       });
       
       ipcMain.on('clicked', (event, arg) => {
-        console.log('observe');
         let theta = {
           X: new LPS.Value(arg.x),
           Y: new LPS.Value(arg.y)
         };
         let observation = LPS.literal('click(X, Y)').substitute(theta);
-        console.log('' + observation);
         engine.observe(observation);
       });
       
@@ -96,7 +93,6 @@ ipcMain.on('view-ready', (event, arg) => {
       });
 
       engine.on('postCycle', () => {
-        console.log('TIME ' + engine.getCurrentTime());
         sender.send('time-update', { time: engine.getCurrentTime() });
       });
       
