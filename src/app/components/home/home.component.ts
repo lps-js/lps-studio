@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private objects: Object = {};
   private images: Object = {};
   private isDone: boolean = false;
+  private currentTime: string = 'Loading';
   
   @ViewChild('sandbox') sandbox: SandboxComponent;
   constructor() { }
@@ -21,6 +22,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     ipcRenderer.on('done', (event, arg) => {
       this.isDone = true;
+      this.currentTime = 'Done';
     });
     
     ipcRenderer.on('load-image', (event, arg) => {
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     ipcRenderer.on('time-update', (event, arg) => {
       let time = arg.time;
+      this.currentTime = time;
     });
     
     ipcRenderer.on('draw-image', (event, arg) => {
@@ -59,6 +62,38 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (iteration >= numCycles) {
           obj.x = arg.x;
           obj.y = arg.y;
+          clearInterval(animationTimer);
+          return;
+        }
+        obj.x += deltaXPerIteration;
+        obj.y += deltaYPerIteration;
+        iteration += 1;
+      }, intervalTime);
+    });
+    
+    ipcRenderer.on('move-to', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = this.objects[arg.id];
+      obj.x = arg.x;
+      obj.y = arg.y;
+    });
+    
+    ipcRenderer.on('move-by', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = this.objects[arg.id];
+      let deltaX = arg.x;
+      let deltaY = arg.y;
+      let intervalTime = 20;
+      let numCycles = arg.cycleInterval / intervalTime;
+      let deltaXPerIteration = deltaX / numCycles;
+      let deltaYPerIteration = deltaY / numCycles;
+      let iteration = 0;
+      let animationTimer = setInterval(() => {
+        if (iteration >= numCycles) {
           clearInterval(animationTimer);
           return;
         }
