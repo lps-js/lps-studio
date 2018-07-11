@@ -4,6 +4,8 @@ import { SandboxComponent } from '../sandbox/sandbox.component';
 import { Circle } from '../sandbox/canvas/Circle';
 import { Image as ImageObject } from '../sandbox/canvas/Image';
 
+let containerMargin = 30;
+  
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -102,6 +104,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         iteration += 1;
       }, intervalTime);
     });
+    
+    this.sandbox.width = window.innerWidth - containerMargin;
   }
   
   canvasClicked(pos: any) {
@@ -128,6 +132,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   @HostListener('window:unload', [ '$event' ])
   unloadHandler(event) {
     ipcRenderer.send('view-destroyed');
+  }
+  
+  @HostListener('window:resize', [ '$event' ])
+  resizeHandler(event) {
+    this.sandbox.width = window.innerWidth - containerMargin;
   }
 
 }
