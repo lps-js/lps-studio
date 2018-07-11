@@ -35,7 +35,7 @@ ipcMain.on('view-ready', (event, arg) => {
           X: new LPS.Value(arg.x),
           Y: new LPS.Value(arg.y)
         };
-        let observation = LPS.literal('click(X, Y)').substitute(theta);
+        let observation = LPS.literal(arg.observation).substitute(theta);
         engine.observe(observation);
       });
       
