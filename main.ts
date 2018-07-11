@@ -91,6 +91,39 @@ ipcMain.on('view-ready', (event, arg) => {
         }
         return [ { theta: theta } ];
       });
+      
+      engine.define('move_to', (id, x, y, t1, t2) => {
+        let data = {
+          id: id.evaluate(),
+          x: x.evaluate(),
+          y: y.evaluate()
+        };
+        sender.send('move-to', data);
+        let theta = {};
+        if (t2 instanceof LPS.Variable) {
+          let time1 = t1.evaluate();
+          let time2 = new LPS.Value(time1 + 1);
+          theta[t2.evaluate()] = time2;
+        }
+        return [ { theta: theta } ];
+      });
+      
+      engine.define('move_by', (id, x, y, t1, t2) => {
+        let data = {
+          id: id.evaluate(),
+          x: x.evaluate(),
+          y: y.evaluate(),
+          cycleInterval: engine.getCycleInterval()
+        };
+        sender.send('move-by', data);
+        let theta = {};
+        if (t2 instanceof LPS.Variable) {
+          let time1 = t1.evaluate();
+          let time2 = new LPS.Value(time1 + 1);
+          theta[t2.evaluate()] = time2;
+        }
+        return [ { theta: theta } ];
+      });
 
       engine.on('postCycle', () => {
         sender.send('time-update', { time: engine.getCurrentTime() });
