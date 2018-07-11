@@ -104,11 +104,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
   
-  canvasClicked(pos: Object) {
+  canvasClicked(pos: any) {
     if (this.isDone) {
       return;
     }
-    ipcRenderer.send('clicked', pos);
+    let data = {
+      x: pos.x,
+      y: pos.y,
+      observation: 'click(X, Y)'
+    }
+    ipcRenderer.send('clicked', data);
   }
   
   canvasReady() {
