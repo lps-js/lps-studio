@@ -58,6 +58,36 @@ ipcMain.on('view-ready', (event, arg) => {
         return [ { theta: theta } ];
       });
       
+      engine.define('show', (id, t1, t2) => {
+        let data = {
+          id: id.evaluate(),
+          cycleInterval: engine.getCycleInterval()
+        };
+        sender.send('show-object', data);
+        let theta = {};
+        if (t2 instanceof LPS.Variable) {
+          let time1 = t1.evaluate();
+          let time2 = new LPS.Value(time1 + 1);
+          theta[t2.evaluate()] = time2;
+        }
+        return [ { theta: theta } ];
+      });
+      
+      engine.define('hide', (id, t1, t2) => {
+        let data = {
+          id: id.evaluate(),
+          cycleInterval: engine.getCycleInterval()
+        };
+        sender.send('hide-object', data);
+        let theta = {};
+        if (t2 instanceof LPS.Variable) {
+          let time1 = t1.evaluate();
+          let time2 = new LPS.Value(time1 + 1);
+          theta[t2.evaluate()] = time2;
+        }
+        return [ { theta: theta } ];
+      });
+      
       engine.define('draw_circle', (id, x, y, radius, t1, t2) => {
         let data = {
           id: id.evaluate(),

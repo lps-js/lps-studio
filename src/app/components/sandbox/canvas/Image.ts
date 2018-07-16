@@ -8,6 +8,7 @@ export class Image implements CanvasObject {
   height: number;
   private halfWidth: number;
   private halfHeight: number;
+  hidden: boolean = false;
   image: HTMLImageElement;
   
   constructor(x: number, y: number, width: number, height: number, image: HTMLImageElement) {
@@ -22,6 +23,9 @@ export class Image implements CanvasObject {
   }
   
   draw(context: CanvasRenderingContext2D) {
+    if (this.hidden) {
+      return;
+    }
     context.drawImage(this.image, this.x - this.halfWidth, this.y - this.halfHeight, this.width, this.height);
   }
   

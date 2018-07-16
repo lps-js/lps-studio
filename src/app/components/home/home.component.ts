@@ -48,6 +48,24 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.sandbox.objects.push(this.objects[arg.id]);
     });
     
+    ipcRenderer.on('hide-object', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      setTimeout(() => {
+        this.objects[arg.id].hidden = true;
+      }, arg.cycleInterval);
+    });
+    
+    ipcRenderer.on('show-object', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      // setTimeout(() => {
+      this.objects[arg.id].hidden = false;
+      // }, arg.cycleInterval);
+    });
+    
     ipcRenderer.on('move', (event, arg) => {
       if (this.objects[arg.id] === undefined) {
         return;
