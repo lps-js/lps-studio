@@ -78,7 +78,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       let deltaXPerIteration = deltaX / numCycles;
       let deltaYPerIteration = deltaY / numCycles;
       let iteration = 0;
-      let animationTimer = setInterval(() => {
+      let animationTimer;
+      let animateFunc = () => {
         if (iteration >= numCycles) {
           obj.x = arg.x;
           obj.y = arg.y;
@@ -88,7 +89,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         obj.x += deltaXPerIteration;
         obj.y += deltaYPerIteration;
         iteration += 1;
-      }, intervalTime);
+      };
+      animateFunc();
+      animationTimer = setInterval(animateFunc, intervalTime);
     });
     
     ipcRenderer.on('move-to', (event, arg) => {
