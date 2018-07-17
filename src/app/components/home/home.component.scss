@@ -1,2 +1,69 @@
-.container {
+html, body {
+  height: 100%;
+}
+
+app-root, app-home, .container-fluid, .row {
+  height: 100%;
+}
+
+.timebar {
+  border-bottom: 1px solid #ccc;
+  background: #eee;
+  padding: 5px 10px;
+}
+
+.console-view {
+  right: 0;
+  z-index: 100000;
+  position: absolute;
+  background: #fff;
+  width: 320px;
+  height: 100%;
+  border-left: 1px solid #ccc;
+  font-size: 12px;
+  
+  .console-output {
+    padding: 5px;
+    padding-bottom: 45px;
+    height: 100%;
+    font-family: 'Fira Mono', Consolas, monospace;
+    overflow: auto;
+  }
+
+  .console-input {
+    position:absolute;
+    bottom: 0;
+    z-index: 1000000;
+    height: 32px;
+    border-top: 1px solid #ccc;
+    background: #FFF;
+    width: 100%;
+    
+    input {
+      border: none;
+      width: 100%;
+      margin: 5px 0;
+      padding: 0 5px;
+      
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.console-output {
+  color: #333;
+  background: #efefef;
+}
+
+.dark-theme {
+  .console-view {
+    border-left: 1px solid #333;
+    
+    .console-output {
+      background: #333;
+      color: #efefef;
+    }
+  }
 }

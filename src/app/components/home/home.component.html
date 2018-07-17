@@ -1,13 +1,23 @@
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-12">
-    <h1 class="title">
-      {{ 'PAGES.HOME.TITLE' | translate }}
-    </h1>
+<div class="container-fluid p-0">
+  <div class="row m-0">
+    <div class="console-view">
+      <div class="console-output" #consoleOutput>
+        <div #consoleOutputInner class="console-output-inner">
+          <div *ngFor="let message of messages">
+            <p>{{ message }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="console-input">
+        <input type="text" [(ngModel)]="consoleInput" (keypress)="consoleInputKeypress($event)">
+      </div>
+    </div>
+    <div  class="col-md-12 p-0">
+      <div class="timebar">
+        <span>{{ currentTime }}</span>
+      </div>
     
-    <p>{{ currentTime }}</p>
-    
-    <sandbox #sandbox id="sandbox" (clicked)="canvasClicked($event)" (ready)="canvasReady()"></sandbox>
+      <sandbox #sandbox id="sandbox" (clicked)="canvasClicked($event)" (ready)="canvasReady()"></sandbox>
     </div>
   </div>
 </div>

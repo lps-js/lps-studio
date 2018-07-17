@@ -10,6 +10,7 @@ export class Image implements CanvasObject {
   private halfHeight: number;
   hidden: boolean = false;
   image: HTMLImageElement;
+  animations: Array<Function> = [];
   
   constructor(x: number, y: number, width: number, height: number, image: HTMLImageElement) {
     this.x = x;
@@ -26,6 +27,14 @@ export class Image implements CanvasObject {
     if (this.hidden) {
       return;
     }
+    let newAnimations = [];
+    this.animations.forEach((animation) => {
+      let result = animation();
+      if (result !== false) {
+        newAnimations.push(animation);
+      }
+    });
+    this.animations = newAnimations;
     context.drawImage(this.image, this.x - this.halfWidth, this.y - this.halfHeight, this.width, this.height);
   }
   

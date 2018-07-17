@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { ipcRenderer } from 'electron';
 import { SandboxComponent } from '../sandbox/sandbox.component';
 import { Circle } from '../sandbox/canvas/Circle';
 import { Image as ImageObject } from '../sandbox/canvas/Image';
-
-let containerMargin = 30;
+import { CanvasObject } from '../sandbox/canvas/CanvasObject';
+  
+const timebarHeight = 45; // px
   
 @Component({
   selector: 'app-home',
@@ -13,9 +14,14 @@ let containerMargin = 30;
 })
 export class HomeComponent implements OnInit, OnDestroy {
   
+  @ViewChild('consoleOutput') consoleOutputView: ElementRef;
+  
+  private messages: Array<string> = [];
+  
   private objects: Object = {};
   private images: Object = {};
   private isDone: boolean = false;
+  private consoleInput: String;
   private currentTime: string = 'Loading';
   
   @ViewChild('sandbox') sandbox: SandboxComponent;
@@ -25,6 +31,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ipcRenderer.on('done', (event, arg) => {
       this.isDone = true;
       this.currentTime = 'Done';
+      this.consoleLog('LPS Program execution complete');
     });
     
     ipcRenderer.on('load-image', (event, arg) => {
@@ -36,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     ipcRenderer.on('time-update', (event, arg) => {
       let time = arg.time;
       this.currentTime = time;
+      this.consoleLog('Time ' + time);
     });
     
     ipcRenderer.on('draw-image', (event, arg) => {
@@ -52,8 +60,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (this.objects[arg.id] === undefined) {
         return;
       }
+      let obj = <CanvasObject>this.objects[arg.id];
       setTimeout(() => {
-        this.objects[arg.id].hidden = true;
+        obj.animations.push(() => {
+          obj.hidden = true;
+          this.consoleLog('Hiding "' + arg.id + '"');
+          return false;
+        });
       }, arg.cycleInterval);
     });
     
@@ -61,37 +74,40 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (this.objects[arg.id] === undefined) {
         return;
       }
-      // setTimeout(() => {
-      this.objects[arg.id].hidden = false;
-      // }, arg.cycleInterval);
+      let obj = <CanvasObject>this.objects[arg.id];
+      setTimeout(() => {
+        obj.hidden = false;
+        this.consoleLog('Showing "' + arg.id + '"');
+      }, arg.cycleInterval);
     });
     
     ipcRenderer.on('move', (event, arg) => {
       if (this.objects[arg.id] === undefined) {
         return;
       }
-      let obj = this.objects[arg.id];
+      let obj = <CanvasObject>this.objects[arg.id];
       let deltaX = arg.x - obj.x;
       let deltaY = arg.y - obj.y;
       let intervalTime = 20;
-      let numCycles = arg.cycleInterval / intervalTime;
+      let numCycles = arg.cycleInterval / intervalTime * 0.8;
       let deltaXPerIteration = deltaX / numCycles;
       let deltaYPerIteration = deltaY / numCycles;
       let iteration = 0;
       let animationTimer;
+      this.consoleLog('Start moving "' + arg.id + '" from (' + obj.x + ', ' + obj.y + ')');
       let animateFunc = () => {
         if (iteration >= numCycles) {
           obj.x = arg.x;
           obj.y = arg.y;
-          clearInterval(animationTimer);
-          return;
+          this.consoleLog('End moving "' + arg.id + '" to (' + arg.x + ', ' + arg.y + ')');
+          return false;
         }
         obj.x += deltaXPerIteration;
         obj.y += deltaYPerIteration;
         iteration += 1;
+        return true;
       };
-      animateFunc();
-      animationTimer = setInterval(animateFunc, intervalTime);
+      obj.animations.push(animateFunc);
     });
     
     ipcRenderer.on('move-to', (event, arg) => {
@@ -115,18 +131,20 @@ export class HomeComponent implements OnInit, OnDestroy {
       let deltaXPerIteration = deltaX / numCycles;
       let deltaYPerIteration = deltaY / numCycles;
       let iteration = 0;
-      let animationTimer = setInterval(() => {
+      let animateFunc = () => {
         if (iteration >= numCycles) {
-          clearInterval(animationTimer);
-          return;
+          return false;
         }
         obj.x += deltaXPerIteration;
         obj.y += deltaYPerIteration;
         iteration += 1;
-      }, intervalTime);
+        return true;
+      };
+      obj.animations.push(animateFunc);
     });
     
-    this.sandbox.width = window.innerWidth - containerMargin;
+    this.sandbox.width = window.innerWidth;
+    this.sandbox.height = window.innerHeight - timebarHeight;
   }
   
   canvasClicked(pos: any) {
@@ -141,8 +159,17 @@ export class HomeComponent implements OnInit, OnDestroy {
     ipcRenderer.send('clicked', data);
   }
   
+  consoleLog(message: string) {
+    let element = this.consoleOutputView.nativeElement;
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      setTimeout(() => {
+        element.scrollTop = element.scrollHeight;
+      }, 50)
+    }
+    this.messages.push(message);
+  }
+  
   canvasReady() {
-    console.log('ready');
     ipcRenderer.send('view-ready');
   }
   
@@ -157,7 +184,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   @HostListener('window:resize', [ '$event' ])
   resizeHandler(event) {
-    this.sandbox.width = window.innerWidth - containerMargin;
+    this.sandbox.width = window.innerWidth;
+    this.sandbox.height = window.innerHeight - timebarHeight;
+  }
+  
+  consoleInputKeypress(event) {
+    if (event.keyCode !== 13) {
+      return;
+    }
+    this.consoleLog('Observing "' + this.consoleInput + '"');
+    ipcRenderer.send('input-observe', { input: this.consoleInput });
+    this.consoleInput = '';
   }
 
 }
