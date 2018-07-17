@@ -16,13 +16,14 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   @ViewChild('consoleOutput') consoleOutputView: ElementRef;
   
-  private messages: Array<string> = [];
+  messages: Array<string> = [];
+  
+  consoleInput: String;
+  currentTime: string = 'Loading';
   
   private objects: Object = {};
   private images: Object = {};
   private isDone: boolean = false;
-  private consoleInput: String;
-  private currentTime: string = 'Loading';
   
   @ViewChild('sandbox') sandbox: SandboxComponent;
   constructor() { }
