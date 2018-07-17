@@ -30,6 +30,11 @@ ipcMain.on('view-ready', (event, arg) => {
         engine.terminate();
       });
       
+      ipcMain.on('input-observe', (event, arg) => {
+        let observation = LPS.literalSet(arg.input);
+        engine.observe(observation);
+      });
+      
       ipcMain.on('clicked', (event, arg) => {
         let theta = {
           X: new LPS.Value(arg.x),
@@ -176,6 +181,7 @@ function createWindow() {
   win = new BrowserWindow({
     x: 0,
     y: 0,
+    title: 'LPS Studio',
     width: size.width,
     height: size.height
   });
