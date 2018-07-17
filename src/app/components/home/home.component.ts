@@ -82,6 +82,72 @@ export class HomeComponent implements OnInit, OnDestroy {
       }, arg.cycleInterval);
     });
     
+    ipcRenderer.on('flip-vertical', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = <ImageObject>this.objects[arg.id];
+      setTimeout(() => {
+        obj.flipVertical = !obj.flipVertical;
+        this.consoleLog('Flipping "' + arg.id + '" Vertically');
+      }, 50);
+    });
+    
+    ipcRenderer.on('clear-flip-vertical', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = <ImageObject>this.objects[arg.id];
+      setTimeout(() => {
+        obj.flipVertical = false;
+        this.consoleLog('Clear "' + arg.id + '" Vertical Flip');
+      }, 50);
+    });
+    
+    ipcRenderer.on('set-flip-vertical', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = <ImageObject>this.objects[arg.id];
+      setTimeout(() => {
+        obj.flipVertical = true;
+        this.consoleLog('Set "' + arg.id + '" Vertical Flip');
+      }, 50);
+    });
+    
+    ipcRenderer.on('flip-horizontal', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = <ImageObject>this.objects[arg.id];
+      setTimeout(() => {
+        obj.flipHorizontal = !obj.flipHorizontal;
+        this.consoleLog('Flipping "' + arg.id + '" Horizontally');
+      }, 50);
+    });
+    
+    ipcRenderer.on('clear-flip-horizontal', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = <ImageObject>this.objects[arg.id];
+      setTimeout(() => {
+        obj.flipHorizontal = false;
+        this.consoleLog('Clear "' + arg.id + '" Horizontal Flip');
+      }, 50);
+    });
+    
+    ipcRenderer.on('set-flip-horizontal', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = <ImageObject>this.objects[arg.id];
+      setTimeout(() => {
+        obj.flipHorizontal = true;
+        this.consoleLog('Set "' + arg.id + '" Horizontal Flip');
+      }, 50);
+    });
+    
     ipcRenderer.on('move', (event, arg) => {
       if (this.objects[arg.id] === undefined) {
         return;
