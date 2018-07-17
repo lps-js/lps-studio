@@ -30,7 +30,9 @@
     "@ng-bootstrap/ng-bootstrap": "^2.2.0",
     "bootstrap": "^4.1.2",
     "font-awesome": "^4.7.0",
-    "lps": "file:../lps"
+    "jquery": "^3.3.1",
+    "lps": "file:../lps",
+    "popper.js": "^1.14.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.6.3",
