@@ -183,7 +183,8 @@ function createWindow() {
     y: 0,
     title: 'LPS Studio',
     width: size.width,
-    height: size.height
+    height: size.height,
+    show: false
   });
 
   if (serve) {
@@ -198,7 +199,11 @@ function createWindow() {
     }));
   }
 
-  win.webContents.openDevTools();
+  
+  win.once('ready-to-show', () => {
+    win.show();
+    win.webContents.openDevTools();
+  });
 
   // Emitted when the window is closed.
   win.on('closed', () => {
