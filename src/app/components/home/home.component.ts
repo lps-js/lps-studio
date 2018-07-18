@@ -153,24 +153,29 @@ export class HomeComponent implements OnInit, OnDestroy {
         return;
       }
       let obj = <CanvasObject>this.objects[arg.id];
-      let deltaX = arg.x - obj.x;
-      let deltaY = arg.y - obj.y;
-      let intervalTime = 20;
-      let numCycles = arg.cycleInterval / intervalTime * 0.8;
-      let deltaXPerIteration = deltaX / numCycles;
-      let deltaYPerIteration = deltaY / numCycles;
+      let origin = {
+        x: obj.x,
+        y: obj.y
+      };
+      let deltaX = arg.x - origin.x;
+      let deltaY = arg.y - origin.y;
       let iteration = 0;
-      let animationTimer;
-      this.consoleLog('Start moving "' + arg.id + '" from (' + obj.x + ', ' + obj.y + ')');
-      let animateFunc = () => {
-        if (iteration >= numCycles) {
+      this.consoleLog('Start moving "' + arg.id + '" from (' + origin.x + ', ' + origin.y + ')');
+      let startTime;
+      let animateFunc = (timestamp) => {
+        if (startTime === undefined) {
+          startTime = timestamp;
+        }
+        let duration = timestamp - startTime;
+        if (duration >= arg.cycleInterval) {
           obj.x = arg.x;
           obj.y = arg.y;
           this.consoleLog('End moving "' + arg.id + '" to (' + arg.x + ', ' + arg.y + ')');
           return false;
         }
-        obj.x += deltaXPerIteration;
-        obj.y += deltaYPerIteration;
+        let ratio = duration / arg.cycleInterval;
+        obj.x = origin.x + ratio * deltaX;
+        obj.y = origin.y + ratio * deltaY;
         iteration += 1;
         return true;
       };
