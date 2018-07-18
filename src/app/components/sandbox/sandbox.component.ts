@@ -56,7 +56,9 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
       this.mainCanvas.nativeElement.height = this._height;
       this.context = (<HTMLCanvasElement>this.mainCanvas.nativeElement).getContext('2d');
       this.ready.emit();
-      this.canvasDraw();
+      requestAnimationFrame((ts) => {
+        this.canvasDraw(ts);
+      });
     }, 0);
   }
   
@@ -67,16 +69,17 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     this.clicked.emit({ x: x, y: y });
   }
   
-  private canvasDraw() {
+  private canvasDraw(timestamp: number) {
     if (this.context === null) {
       return;
     }
-    requestAnimationFrame(() => {
-      this.canvasDraw();
+    // prepare next frame
+    requestAnimationFrame((ts) => {
+      this.canvasDraw(ts);
     });
     this.context.clearRect(0, 0, this.mainCanvas.nativeElement.width, this.mainCanvas.nativeElement.height);
     this.objects.forEach((obj) => {
-      obj.draw(this.context);
+      obj.draw(this.context, timestamp);
     });
   }
   

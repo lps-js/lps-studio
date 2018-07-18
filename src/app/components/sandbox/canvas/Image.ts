@@ -72,13 +72,13 @@ export class Image implements CanvasObject {
     return offscreenCanvas;
   }
   
-  draw(context: CanvasRenderingContext2D) {
+  draw(context: CanvasRenderingContext2D, timestamp: number) {
     if (this.hidden) {
       return;
     }
     let newAnimations = [];
     this.animations.forEach((animation) => {
-      let result = animation();
+      let result = animation(timestamp);
       if (result !== false) {
         newAnimations.push(animation);
       }
