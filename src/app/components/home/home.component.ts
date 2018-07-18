@@ -243,6 +243,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   
   canvasReady() {
     ipcRenderer.send('view-ready');
+    this.consoleLog('Studio Ready for LPS Program Execution');
   }
   
   ngOnDestroy() {
