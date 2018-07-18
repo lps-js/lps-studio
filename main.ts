@@ -12,7 +12,7 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
 ipcMain.on('view-ready', (event, arg) => {
   let sender = event.sender;
   
-  LPS.load(__dirname + '/../lps/examples/studio.lps')
+  LPS.load(__dirname + '/../lps/examples/fire-example-studio.lps')
     .then((engine) => {
       let queryResult = engine.query(LPS.literal('load_image(Id, Url)'));
       queryResult.forEach((imageTuple) => {
@@ -44,6 +44,16 @@ ipcMain.on('view-ready', (event, arg) => {
         engine.observe(observation);
       });
       
+      let updateTimingVariables = (t1, t2) => {
+        let theta = {};
+        if (t2 instanceof LPS.Variable) {
+          let time1 = t1.evaluate();
+          let time2 = new LPS.Value(time1 + 1);
+          theta[t2.evaluate()] = time2;
+        }
+        return [ { theta: theta } ];
+      };
+      
       engine.define('draw_image', (id, x, y, width, height, imageId, t1, t2) => {
         let data = {
           id: id.evaluate(),
@@ -54,13 +64,7 @@ ipcMain.on('view-ready', (event, arg) => {
           imageId: imageId.evaluate()
         };
         sender.send('draw-image', data);
-        let theta = {};
-        if (t2 instanceof LPS.Variable) {
-          let time1 = t1.evaluate();
-          let time2 = new LPS.Value(time1 + 1);
-          theta[t2.evaluate()] = time2;
-        }
-        return [ { theta: theta } ];
+        return updateTimingVariables(t1, t2);
       });
       
       engine.define('show', (id, t1, t2) => {
@@ -69,13 +73,7 @@ ipcMain.on('view-ready', (event, arg) => {
           cycleInterval: engine.getCycleInterval()
         };
         sender.send('show-object', data);
-        let theta = {};
-        if (t2 instanceof LPS.Variable) {
-          let time1 = t1.evaluate();
-          let time2 = new LPS.Value(time1 + 1);
-          theta[t2.evaluate()] = time2;
-        }
-        return [ { theta: theta } ];
+        return updateTimingVariables(t1, t2);
       });
       
       engine.define('hide', (id, t1, t2) => {
@@ -84,13 +82,55 @@ ipcMain.on('view-ready', (event, arg) => {
           cycleInterval: engine.getCycleInterval()
         };
         sender.send('hide-object', data);
-        let theta = {};
-        if (t2 instanceof LPS.Variable) {
-          let time1 = t1.evaluate();
-          let time2 = new LPS.Value(time1 + 1);
-          theta[t2.evaluate()] = time2;
-        }
-        return [ { theta: theta } ];
+        return updateTimingVariables(t1, t2);
+      });
+      
+      engine.define('flip_horizontal', (id, t1, t2) => {
+        let data = {
+          id: id.evaluate()
+        };
+        sender.send('flip-horizontal', data);
+        return updateTimingVariables(t1, t2);
+      });
+      
+      engine.define('clear_flip_horizontal', (id, t1, t2) => {
+        let data = {
+          id: id.evaluate()
+        };
+        sender.send('clear-flip-horizontal', data);
+        return updateTimingVariables(t1, t2);
+      });
+      
+      engine.define('set_flip_horizontal', (id, t1, t2) => {
+        let data = {
+          id: id.evaluate()
+        };
+        sender.send('set-flip-horizontal', data);
+        return updateTimingVariables(t1, t2);
+      });
+      
+      engine.define('flip_vertical', (id, t1, t2) => {
+        let data = {
+          id: id.evaluate()
+        };
+        sender.send('flip-vertical', data);
+        return updateTimingVariables(t1, t2);
+      });
+      
+      engine.define('clear_flip_vertical', (id, t1, t2) => {
+        let data = {
+          id: id.evaluate()
+        };
+        sender.send('clear-flip-vertical', data);
+        return updateTimingVariables(t1, t2);
+      });
+      
+      engine.define('set_flip_vertical', (id, t1, t2) => {
+        let data = {
+          id: id.evaluate()
+        };
+        sender.send('set-flip-vertical', data);
+        return updateTimingVariables(t1, t2);
       });
       
       engine.define('draw_circle', (id, x, y, radius, t1, t2) => {
@@ -101,13 +141,7 @@ ipcMain.on('view-ready', (event, arg) => {
           radius: radius.evaluate()
         };
         sender.send('draw-circle', data);
-        let theta = {};
-        if (t2 instanceof LPS.Variable) {
-          let time1 = t1.evaluate();
-          let time2 = new LPS.Value(time1 + 1);
-          theta[t2.evaluate()] = time2;
-        }
-        return [ { theta: theta } ];
+        return updateTimingVariables(t1, t2);
       });
       
       engine.define('move', (id, x, y, t1, t2) => {
@@ -118,13 +152,7 @@ ipcMain.on('view-ready', (event, arg) => {
           cycleInterval: engine.getCycleInterval()
         };
         sender.send('move', data);
-        let theta = {};
-        if (t2 instanceof LPS.Variable) {
-          let time1 = t1.evaluate();
-          let time2 = new LPS.Value(time1 + 1);
-          theta[t2.evaluate()] = time2;
-        }
-        return [ { theta: theta } ];
+        return updateTimingVariables(t1, t2);
       });
       
       engine.define('move_to', (id, x, y, t1, t2) => {
@@ -134,13 +162,7 @@ ipcMain.on('view-ready', (event, arg) => {
           y: y.evaluate()
         };
         sender.send('move-to', data);
-        let theta = {};
-        if (t2 instanceof LPS.Variable) {
-          let time1 = t1.evaluate();
-          let time2 = new LPS.Value(time1 + 1);
-          theta[t2.evaluate()] = time2;
-        }
-        return [ { theta: theta } ];
+        return updateTimingVariables(t1, t2);
       });
       
       engine.define('move_by', (id, x, y, t1, t2) => {
@@ -151,13 +173,7 @@ ipcMain.on('view-ready', (event, arg) => {
           cycleInterval: engine.getCycleInterval()
         };
         sender.send('move-by', data);
-        let theta = {};
-        if (t2 instanceof LPS.Variable) {
-          let time1 = t1.evaluate();
-          let time2 = new LPS.Value(time1 + 1);
-          theta[t2.evaluate()] = time2;
-        }
-        return [ { theta: theta } ];
+        return updateTimingVariables(t1, t2);
       });
 
       engine.on('postCycle', () => {
