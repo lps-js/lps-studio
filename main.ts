@@ -44,17 +44,7 @@ ipcMain.on('view-ready', (event, arg) => {
         engine.observe(observation);
       });
       
-      let updateTimingVariables = (t1, t2) => {
-        let theta = {};
-        if (t2 instanceof LPS.Variable) {
-          let time1 = t1.evaluate();
-          let time2 = new LPS.Value(time1 + 1);
-          theta[t2.evaluate()] = time2;
-        }
-        return [ { theta: theta } ];
-      };
-      
-      engine.define('draw_image', (id, x, y, width, height, imageId, t1, t2) => {
+      engine.define('draw_image', (id, x, y, width, height, imageId) => {
         let data = {
           id: id.evaluate(),
           x: x.evaluate(),
@@ -64,76 +54,76 @@ ipcMain.on('view-ready', (event, arg) => {
           imageId: imageId.evaluate()
         };
         sender.send('draw-image', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('show', (id, t1, t2) => {
+      engine.define('show', (id) => {
         let data = {
           id: id.evaluate(),
           cycleInterval: engine.getCycleInterval()
         };
         sender.send('show-object', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('hide', (id, t1, t2) => {
+      engine.define('hide', (id) => {
         let data = {
           id: id.evaluate(),
           cycleInterval: engine.getCycleInterval()
         };
         sender.send('hide-object', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('flip_horizontal', (id, t1, t2) => {
+      engine.define('flip_horizontal', (id) => {
         let data = {
           id: id.evaluate()
         };
         sender.send('flip-horizontal', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('clear_flip_horizontal', (id, t1, t2) => {
+      engine.define('clear_flip_horizontal', (id) => {
         let data = {
           id: id.evaluate()
         };
         sender.send('clear-flip-horizontal', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('set_flip_horizontal', (id, t1, t2) => {
+      engine.define('set_flip_horizontal', (id) => {
         let data = {
           id: id.evaluate()
         };
         sender.send('set-flip-horizontal', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('flip_vertical', (id, t1, t2) => {
+      engine.define('flip_vertical', (id) => {
         let data = {
           id: id.evaluate()
         };
         sender.send('flip-vertical', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('clear_flip_vertical', (id, t1, t2) => {
+      engine.define('clear_flip_vertical', (id) => {
         let data = {
           id: id.evaluate()
         };
         sender.send('clear-flip-vertical', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('set_flip_vertical', (id, t1, t2) => {
+      engine.define('set_flip_vertical', (id) => {
         let data = {
           id: id.evaluate()
         };
         sender.send('set-flip-vertical', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('draw_circle', (id, x, y, radius, t1, t2) => {
+      engine.define('draw_circle', (id, x, y, radius) => {
         let data = {
           id: id.evaluate(),
           x: x.evaluate(),
@@ -141,10 +131,10 @@ ipcMain.on('view-ready', (event, arg) => {
           radius: radius.evaluate()
         };
         sender.send('draw-circle', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('move', (id, x, y, t1, t2) => {
+      engine.define('move', (id, x, y) => {
         let data = {
           id: id.evaluate(),
           x: x.evaluate(),
@@ -152,20 +142,20 @@ ipcMain.on('view-ready', (event, arg) => {
           cycleInterval: engine.getCycleInterval()
         };
         sender.send('move', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('move_to', (id, x, y, t1, t2) => {
+      engine.define('move_to', (id, x, y) => {
         let data = {
           id: id.evaluate(),
           x: x.evaluate(),
           y: y.evaluate()
         };
         sender.send('move-to', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
       
-      engine.define('move_by', (id, x, y, t1, t2) => {
+      engine.define('move_by', (id, x, y) => {
         let data = {
           id: id.evaluate(),
           x: x.evaluate(),
@@ -173,7 +163,7 @@ ipcMain.on('view-ready', (event, arg) => {
           cycleInterval: engine.getCycleInterval()
         };
         sender.send('move-by', data);
-        return updateTimingVariables(t1, t2);
+        return [ { theta: {} } ];
       });
 
       engine.on('postCycle', () => {
