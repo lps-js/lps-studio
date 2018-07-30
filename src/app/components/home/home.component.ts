@@ -4,6 +4,8 @@ import { SandboxComponent } from '../sandbox/sandbox.component';
 import { Circle } from '../sandbox/canvas/Circle';
 import { Image as ImageObject } from '../sandbox/canvas/Image';
 import { CanvasObject } from '../sandbox/canvas/CanvasObject';
+import { ElectronService } from '../../providers/electron.service';
+import { OpenDialogOptions } from 'electron';
   
 const timebarHeight = 45; // px
   
@@ -26,7 +28,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   private isDone: boolean = false;
   
   @ViewChild('sandbox') sandbox: SandboxComponent;
-  constructor() { }
+  constructor(
+    private electronService: ElectronService
+  ) { }
 
   ngOnInit() {
     ipcRenderer.on('done', (event, arg) => {
