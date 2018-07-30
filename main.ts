@@ -9,7 +9,7 @@ serve = args.some(val => val === '--serve');
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
 
-ipcMain.on('view-ready', (event, arg) => {
+ipcMain.on('lps:start', (event, arg) => {
   let sender = event.sender;
   
   LPS.load(__dirname + '/../lps/examples/fire-example-studio.lps')
@@ -41,17 +41,8 @@ ipcMain.on('view-ready', (event, arg) => {
         engine.unpause();
       });
       
-      ipcMain.on('input-observe', (event, arg) => {
+      ipcMain.on('lps:observe', (event, arg) => {
         let observation = LPS.literalSet(arg.input);
-        engine.observe(observation);
-      });
-      
-      ipcMain.on('clicked', (event, arg) => {
-        let theta = {
-          X: new LPS.Value(arg.x),
-          Y: new LPS.Value(arg.y)
-        };
-        let observation = LPS.literal(arg.observation).substitute(theta);
         engine.observe(observation);
       });
       

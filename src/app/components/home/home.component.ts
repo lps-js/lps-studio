@@ -231,12 +231,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.isDone) {
       return;
     }
-    let data = {
-      x: pos.x,
-      y: pos.y,
-      observation: 'click(X, Y)'
+    const LPS = this.electronService.remote.require('lps');
+    const observation = LPS.literalSet('click(X, Y)');
+    let theta = {
+      X: pos.x,
+      Y: pos.y
     }
-    ipcRenderer.send('clicked', data);
+    ipcRenderer.send('lps:observe', { input: observation.substitute(theta).toString() });
   }
   
   consoleLog(message: string) {
