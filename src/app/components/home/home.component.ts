@@ -255,8 +255,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         'openFile'
       ]
     };
-    dialog.showOpenDialog(options, (filenames) => {
-      if (filenames === undefined) {
+    let browserWindow = this.electronService.remote.getCurrentWindow();
+    dialog.showOpenDialog(browserWindow, options, (filenames) => {
+      if (filenames === undefined || filenames.length !== 1) {
         return;
       }
       this.loadProgram(filenames[0]);
