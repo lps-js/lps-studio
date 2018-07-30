@@ -26,8 +26,11 @@ ipcMain.on('view-ready', (event, arg) => {
       });
         
       ipcMain.once('lps:terminate', (event, arg) => {
-        console.log('destroyed, terminate');
         engine.terminate();
+        ipcMain.removeAllListeners('lps:pause');
+        ipcMain.removeAllListeners('lps:unpause');
+        ipcMain.removeAllListeners('clicked');
+        ipcMain.removeAllListeners('input-observe');
       });
       
       ipcMain.on('lps:pause', (event, arg) => {
