@@ -6,6 +6,7 @@ import { Image as ImageObject } from '../sandbox/canvas/Image';
 import { CanvasObject } from '../sandbox/canvas/CanvasObject';
 import { ElectronService } from '../../providers/electron.service';
 import { OpenDialogOptions } from 'electron';
+const path = require('path');
   
 const timebarHeight = 45; // px
   
@@ -285,8 +286,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.isRunning || this.currentFile === undefined) {
       return;
     }
-    ipcRenderer.send('view-ready', this.currentFile);
-    this.consoleLog('Starting ' + this.currentFile);
+    
+    const name = path.basename(this.currentFile);
+    
+    ipcRenderer.send('lps:start', this.currentFile);
+    
+    this.currentTime = 'Loading ' + name;
+    this.consoleLog('Restarting ' + name);
     this.isRunning = true;
   }
   
@@ -311,9 +317,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.sandbox.objects = [];
       let filename = filenames[0];
       this.currentFile = filename;
-      ipcRenderer.send('view-ready', filename);
-      this.consoleLog('Starting ' + filename);
-      this.currentTime = 'Loading ' + filename;
+      
+      const name = path.basename(this.currentFile);
+      
+      ipcRenderer.send('lps:start', filename);
+      
+      this.consoleLog('Starting ' + name);
+      this.currentTime = 'Loading ' + name;
       this.isRunning = true;
       this.isPaused = false;
     });
