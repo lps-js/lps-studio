@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private objects: Object = {};
   private images: Object = {};
   private isDone: boolean = false;
+  private isPaused: boolean = false;
   private isRunning: boolean = false;
   private currentFile: string;
   
@@ -253,17 +254,28 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   
   requestPause() {
-    if (!this.isRunning) {
+    if (!this.isRunning || this.isPaused) {
       return;
     }
+    this.isPaused = true;
     ipcRenderer.send('lps:pause');
     this.consoleLog('Pausing LPS program execution...');
+  }
+  
+  requestResume() {
+    if (!this.isRunning || !this.isPaused) {
+      return;
+    }
+    this.isPaused = false;
+    ipcRenderer.send('lps:unpause');
+    this.consoleLog('Resuming LPS program execution...');
   }
   
   requestStop() {
     if (!this.isRunning) {
       return;
     }
+    this.isPaused = false;
     ipcRenderer.send('lps:terminate');
     this.consoleLog('Stopping LPS program execution...');
   }
@@ -302,6 +314,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.consoleLog('Starting ' + filename);
       this.currentTime = 'Loading ' + filename;
       this.isRunning = true;
+      this.isPaused = false;
     });
   }
   

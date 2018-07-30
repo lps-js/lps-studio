@@ -9,15 +9,18 @@
         </div>
       </div>
       <div class="console-input">
-        <input type="text" [(ngModel)]="consoleInput" (keypress)="consoleInputKeypress($event)">
+        <input type="text" [(ngModel)]="consoleInput" (keypress)="consoleInputKeypress($event)" [disabled]="!isRunning" placeholder="Enter observations here...">
       </div>
     </div>
     <div  class="col-md-12 p-0">
       <div class="timebar">
         <div class="float-right">
           <div class="btn-group">
-            <button class="btn btn-dark btn-sm"*ngIf="isRunning" (click)="requestPause()">
+            <button class="btn btn-dark btn-sm"*ngIf="isRunning && !isPaused" (click)="requestPause()">
               <i class="fa fa-pause"></i>
+            </button>
+            <button class="btn btn-dark btn-sm"*ngIf="isRunning && isPaused" (click)="requestResume()">
+              <i class="fa fa-play"></i>
             </button>
             <button class="btn btn-dark btn-sm"*ngIf="isRunning" (click)="requestStop()">
               <i class="fa fa-stop"></i>

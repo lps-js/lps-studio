@@ -34,7 +34,11 @@ ipcMain.on('view-ready', (event, arg) => {
       });
       
       ipcMain.on('lps:pause', (event, arg) => {
-        
+        engine.pause();
+      });
+      
+      ipcMain.on('lps:unpause', (event, arg) => {
+        engine.unpause();
       });
       
       ipcMain.on('input-observe', (event, arg) => {
