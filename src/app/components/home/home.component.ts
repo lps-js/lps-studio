@@ -246,8 +246,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   
   canvasReady() {
-    ipcRenderer.send('view-ready');
-    this.consoleLog('Studio Ready for LPS Program Execution');
+    const dialog = this.electronService.remote.dialog;
+    let options: OpenDialogOptions = {
+      filters: [
+        { name: 'LPS Programs', extensions: ['lps'] }
+      ],
+      properties: [
+        'openFile'
+      ]
+    };
+    dialog.showOpenDialog(options, (filenames) => {
+      if (filenames === undefined) {
+        return;
+      }
+      this.loadProgram(filenames[0]);
+      ipcRenderer.send('view-ready', filenames[0]);
+      this.consoleLog('Studio Ready for LPS Program Execution');
+    });
   }
   
   ngOnDestroy() {
