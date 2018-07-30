@@ -266,12 +266,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    ipcRenderer.send('view-destroyed');
+    ipcRenderer.send('lps:terminate');
   }
   
   @HostListener('window:unload', [ '$event' ])
   unloadHandler(event) {
-    ipcRenderer.send('view-destroyed');
+    ipcRenderer.send('lps:terminate');
   }
   
   @HostListener('window:resize', [ '$event' ])

@@ -25,7 +25,7 @@ ipcMain.on('view-ready', (event, arg) => {
         sender.send('load-image', { id: id, url: url });
       });
         
-      ipcMain.once('view-destroyed', (event, arg) => {
+      ipcMain.once('lps:terminate', (event, arg) => {
         console.log('destroyed, terminate');
         engine.terminate();
       });
