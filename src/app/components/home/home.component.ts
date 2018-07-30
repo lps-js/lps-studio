@@ -21,11 +21,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   messages: Array<string> = [];
   
   consoleInput: String;
-  currentTime: string = 'Loading';
+  currentTime: string = 'No program loaded';
   
   private objects: Object = {};
   private images: Object = {};
   private isDone: boolean = false;
+  private isRunning: boolean = false;
+  private currentFile: string;
   
   @ViewChild('sandbox') sandbox: SandboxComponent;
   constructor(
@@ -35,6 +37,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     ipcRenderer.on('done', (event, arg) => {
       this.isDone = true;
+      this.isRunning = false;
       this.currentTime = 'Done';
       this.consoleLog('LPS Program execution complete');
     });
@@ -246,6 +249,35 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   
   canvasReady() {
+    this.requestOpenFile();
+  }
+  
+  requestPause() {
+    if (!this.isRunning) {
+      return;
+    }
+    ipcRenderer.send('lps:pause');
+    this.consoleLog('Pausing LPS program execution...');
+  }
+  
+  requestStop() {
+    if (!this.isRunning) {
+      return;
+    }
+    ipcRenderer.send('lps:terminate');
+    this.consoleLog('Stopping LPS program execution...');
+  }
+  
+  requestRestart() {
+    if (this.isRunning || this.currentFile === undefined) {
+      return;
+    }
+    ipcRenderer.send('view-ready', this.currentFile);
+    this.consoleLog('Starting ' + this.currentFile);
+    this.isRunning = true;
+  }
+  
+  requestOpenFile() {
     const dialog = this.electronService.remote.dialog;
     let options: OpenDialogOptions = {
       filters: [
@@ -260,9 +292,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (filenames === undefined || filenames.length !== 1) {
         return;
       }
-      this.loadProgram(filenames[0]);
-      ipcRenderer.send('view-ready', filenames[0]);
-      this.consoleLog('Studio Ready for LPS Program Execution');
+      
+      this.images = {};
+      this.objects = {};
+      this.sandbox.objects = [];
+      let filename = filenames[0];
+      this.currentFile = filename;
+      ipcRenderer.send('view-ready', filename);
+      this.consoleLog('Starting ' + filename);
+      this.currentTime = 'Loading ' + filename;
+      this.isRunning = true;
     });
   }
   

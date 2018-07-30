@@ -7,9 +7,16 @@ app-root, app-home, .container-fluid, .row {
 }
 
 .timebar {
+  height: 35px;
   border-bottom: 1px solid #ccc;
   background: #eee;
-  padding: 5px 10px;
+  margin-right:320px;
+  padding: 2px;
+  
+  .timing {
+    padding: 10px 4px;
+    line-height: 2;
+  }
 }
 
 .console-view {

@@ -30,6 +30,10 @@ ipcMain.on('view-ready', (event, arg) => {
         engine.terminate();
       });
       
+      ipcMain.on('lps:pause', (event, arg) => {
+        
+      });
+      
       ipcMain.on('input-observe', (event, arg) => {
         let observation = LPS.literalSet(arg.input);
         engine.observe(observation);
