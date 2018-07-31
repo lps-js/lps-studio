@@ -301,6 +301,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.currentTime = 'Loading ' + name;
     this.consoleLog('Restarting ' + name);
     this.isRunning = true;
+    this.isPaused = false;
+    this.isDone = false;
   }
   
   requestOpenFile() {
@@ -334,6 +336,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.currentTime = 'Loading ' + name;
       this.isRunning = true;
       this.isPaused = false;
+      this.isDone = false;
     });
   }
   
