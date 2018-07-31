@@ -21,10 +21,16 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() onMouse = new EventEmitter<Object>();
   @Output() ready = new EventEmitter();
   
+  private _isMouseDown: boolean = false;
+  
   private _width: number = 400;
   private _height: number = 400;
 
   constructor() {
+  }
+  
+  get isMouseDown(): boolean {
+    return this._isMouseDown;
   }
   
   get width(): number {
@@ -65,6 +71,12 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     event.stopPropagation();
     let x = event.offsetX;
     let y = event.offsetY;
+    
+    if (name === 'mousedown') {
+      this._isMouseDown = true;
+    } else if (name === 'mouseup') {
+      this._isMouseDown = false;
+    }
     
     this.onMouse.emit({ event: name, x: x, y: y });
   }

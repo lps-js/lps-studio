@@ -95,6 +95,16 @@ export class HomeComponent implements OnInit, OnDestroy {
       }, arg.cycleInterval);
     });
     
+    ipcRenderer.on('enable-drag', (event, arg) => {
+      if (this.objects[arg.id] === undefined) {
+        return;
+      }
+      let obj = <CanvasObject>this.objects[arg.id];
+      if (this.sandbox.isMouseDown) {
+        obj.isDragEnabled = true;
+      }
+    });
+    
     ipcRenderer.on('flip-vertical', (event, arg) => {
       if (this.objects[arg.id] === undefined) {
         return;
@@ -238,27 +248,108 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     let eventName = e.event;
     let observations = [];
+    let observation: any;
+    let theta: any;
+    
+    let forEachObjectInPosition = (callback) => {
+      Object.keys(this.objects).forEach((key) => {
+        let obj = this.objects[key];
+        let halfWidth = obj.width / 2;
+        let halfHeight = obj.height / 2;
+        let minX = obj.x - halfWidth;
+        let maxX = obj.x + halfWidth;
+        let minY = obj.y - halfHeight;
+        let maxY = obj.y + halfHeight;
+        if (e.x >= minX && e.x <= maxX && e.y >= minY && e.y <= maxY) {
+          callback(key, obj);
+        }
+      });
+    }
+    
     switch (eventName) {
       case 'click':
-        let observation = this.LPS.literal('click(X, Y)');
-        let theta: any = {
+        observation = this.LPS.literal('click(X, Y)');
+        theta = {
           X: e.x,
           Y: e.y
         };
         observations.push(observation.substitute(theta));
+        forEachObjectInPosition((key, obj) => {
+          observation = this.LPS.literal('click(ObjectId, X, Y)');
+          theta.ObjectId = key;
+          observations.push(observation.substitute(theta));
+        });
+        break;
+      case 'mousedown':
+        observation = this.LPS.literal('mousedown(X, Y)');
+        theta = {
+          X: e.x,
+          Y: e.y
+        };
+        observations.push(observation.substitute(theta));
+        forEachObjectInPosition((key, obj) => {
+          observation = this.LPS.literal('mousedown(ObjectId, X, Y)');
+          theta.ObjectId = key;
+          observations.push(observation.substitute(theta));
+        });
+        break;
+      case 'mouseup':
+        // reset isDragEnabled for all objects
+        theta = {
+          X: e.x,
+          Y: e.y
+        };
         Object.keys(this.objects).forEach((key) => {
           let obj = this.objects[key];
-          let halfWidth = obj.width / 2;
-          let halfHeight = obj.height / 2;
-          let minX = obj.x - halfWidth;
-          let maxX = obj.x + halfWidth;
-          let minY = obj.y - halfHeight;
-          let maxY = obj.y + halfHeight;
-          if (e.x >= minX && e.x <= maxX && e.y >= minY && e.y <= maxY) {
-            observation = this.LPS.literal('click(ObjectId, X, Y)');
-            theta.ObjectId = key;
-            observations.push(observation.substitute(theta));
+          if (!obj.isDragEnabled) {
+            return;
           }
+          // was dragging
+          
+          observation = this.LPS.literal('draggedTo(ObjectId, X, Y)');
+          theta.ObjectId = key;
+          observations.push(observation.substitute(theta));
+          obj.isDragEnabled = false;
+        });
+        
+        observation = this.LPS.literal('mouseup(X, Y)');
+        theta = {
+          X: e.x,
+          Y: e.y
+        };
+        observations.push(observation.substitute(theta));
+        forEachObjectInPosition((key, obj) => {
+          observation = this.LPS.literal('mouseup(ObjectId, X, Y)');
+          theta.ObjectId = key;
+          observations.push(observation.substitute(theta));
+        });
+        break;
+      case 'mousemove':
+        if (this.sandbox.isMouseDown) {
+          // possibly dragging?
+          Object.keys(this.objects).forEach((key) => {
+            let obj = this.objects[key];
+            if (!obj.isDragEnabled) {
+              return;
+            }
+            obj.animations.push(() => {
+              obj.x = e.x;
+              obj.y = e.y;
+              return false;
+            });
+          });
+        }
+        
+        observation = this.LPS.literal('mousemove(X, Y)');
+        theta = {
+          X: e.x,
+          Y: e.y
+        };
+        observations.push(observation.substitute(theta));
+        forEachObjectInPosition((key, obj) => {
+          observation = this.LPS.literal('mousemove(ObjectId, X, Y)');
+          theta.ObjectId = key;
+          observations.push(observation.substitute(theta));
         });
         break;
     }

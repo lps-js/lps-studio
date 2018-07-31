@@ -59,6 +59,14 @@ ipcMain.on('lps:start', (event, arg) => {
         return [ { theta: {} } ];
       });
       
+      engine.define('enable_drag', (id) => {
+        let data = {
+          id: id.evaluate()
+        };
+        sender.send('enable-drag', data);
+        return [ { theta: {} } ];
+      });
+      
       engine.define('show', (id) => {
         let data = {
           id: id.evaluate(),
@@ -177,6 +185,9 @@ ipcMain.on('lps:start', (event, arg) => {
       });
       
       engine.run();
+    })
+    .catch((err) => {
+      console.error(err);
     });
 });
 
