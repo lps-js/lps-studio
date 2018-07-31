@@ -378,7 +378,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   
   handleCanvasReady() {
-    this.requestOpenFile();
   }
   
   requestPause() {
