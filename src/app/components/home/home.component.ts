@@ -291,6 +291,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     const name = path.basename(this.currentFile);
     
+    this.images = {};
+    this.objects = {};
+    this.sandbox.objects = [];
+     
     ipcRenderer.send('lps:start', this.currentFile);
     
     this.currentTime = 'Loading ' + name;
@@ -317,6 +321,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.images = {};
       this.objects = {};
       this.sandbox.objects = [];
+      
       let filename = filenames[0];
       this.currentFile = filename;
       
