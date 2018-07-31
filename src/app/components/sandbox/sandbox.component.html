@@ -1,1 +1,7 @@
-<canvas #mainCanvas id="mainCanvas" (click)="canvasClick($event)"></canvas>
+<canvas #mainCanvas
+    id="mainCanvas"
+    (click)="handleMouseDown($event, 'click')"
+    (mousedown)="handleMouseDown($event, 'mousedown')"
+    (mouseup)="handleMouseDown($event, 'mouseup')"
+    (mousemove)="handleMouseDown($event, 'mousemove')"
+  ></canvas>

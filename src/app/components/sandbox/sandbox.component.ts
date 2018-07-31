@@ -17,7 +17,8 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   private refreshInterval: number = 20;
   
   @Input() objects: Array<CanvasObject> = new Array<CanvasObject>();
-  @Output() clicked = new EventEmitter<Object>();
+  
+  @Output() onMouse = new EventEmitter<Object>();
   @Output() ready = new EventEmitter();
   
   private _width: number = 400;
@@ -27,7 +28,6 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   get width(): number {
-    // transform value for display
     return this._width;
   }
 
@@ -38,7 +38,6 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
     
   get height(): number {
-    // transform value for display
     return this._height;
   }
 
@@ -62,11 +61,12 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 0);
   }
   
-  canvasClick(event) {
+  private handleMouseEvent(event, name) {
+    event.stopPropagation();
     let x = event.offsetX;
     let y = event.offsetY;
     
-    this.clicked.emit({ x: x, y: y });
+    this.onMouse.emit({ event: name, x: x, y: y });
   }
   
   private canvasDraw(timestamp: number) {
