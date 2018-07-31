@@ -28,10 +28,10 @@ app-root, app-home, .container-fluid, .row {
   height: 100%;
   border-left: 1px solid #ccc;
   font-size: 12px;
+  padding-bottom: 28px;
   
   .console-output {
     padding: 5px;
-    padding-bottom: 45px;
     height: 100%;
     font-family: 'Fira Mono', Consolas, monospace;
     overflow: auto;
