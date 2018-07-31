@@ -67,7 +67,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 0);
   }
   
-  private handleMouseEvent(event, name) {
+  handleMouseEvent(event, name) {
     event.stopPropagation();
     let x = event.offsetX;
     let y = event.offsetY;

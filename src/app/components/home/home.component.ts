@@ -27,10 +27,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   private objects: Object = {};
   private images: Object = {};
   private isDone: boolean = false;
-  private isPaused: boolean = false;
-  private isRunning: boolean = false;
+  isPaused: boolean = false;
+  isRunning: boolean = false;
   private isMouseDown: boolean = false;
-  private currentFile: string;
+  currentFile: string;
   private LPS;
   
   @ViewChild('sandbox') sandbox: SandboxComponent;
