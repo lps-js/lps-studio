@@ -233,7 +233,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   
   handleCanvasMouseEvent(e: any) {
-    if (this.isDone) {
+    if (!this.isRunning || this.isDone) {
       return;
     }
     let eventName = e.event;
