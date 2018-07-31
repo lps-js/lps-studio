@@ -228,15 +228,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.sandbox.height = window.innerHeight - timebarHeight;
   }
   
-  canvasClicked(pos: any) {
+  handleCanvasMouseEvent(e: any) {
     if (this.isDone) {
       return;
     }
+    let eventName = e.event;
     const LPS = this.electronService.remote.require('lps');
     const observation = LPS.literal('click(X, Y)');
     let theta = {
-      X: pos.x,
-      Y: pos.y
+      X: e.x,
+      Y: e.y
     }
     let input = observation.substitute(theta).toString()
     this.consoleLog('Observing "' + input + '"');
@@ -253,7 +254,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.messages.push(message);
   }
   
-  canvasReady() {
+  handleCanvasReady() {
     this.requestOpenFile();
   }
   

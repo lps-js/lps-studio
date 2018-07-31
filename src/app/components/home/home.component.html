@@ -37,7 +37,7 @@
         <span class="timing">{{ currentTime }}</span>
       </div>
     
-      <sandbox #sandbox id="sandbox" (clicked)="canvasClicked($event)" (ready)="canvasReady()"></sandbox>
+      <sandbox #sandbox id="sandbox" (onMouse)="handleCanvasMouseEvent($event)" (ready)="handleCanvasReady()"></sandbox>
     </div>
   </div>
 </div>
