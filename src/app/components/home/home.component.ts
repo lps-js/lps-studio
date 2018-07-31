@@ -29,12 +29,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   private isDone: boolean = false;
   private isPaused: boolean = false;
   private isRunning: boolean = false;
+  private isMouseDown: boolean = false;
   private currentFile: string;
+  private LPS;
   
   @ViewChild('sandbox') sandbox: SandboxComponent;
   constructor(
     private electronService: ElectronService
-  ) { }
+  ) {
+    this.LPS = this.electronService.remote.require('lps');
+  }
 
   ngOnInit() {
     ipcRenderer.on('done', (event, arg) => {
@@ -233,13 +237,42 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
     let eventName = e.event;
-    const LPS = this.electronService.remote.require('lps');
-    const observation = LPS.literal('click(X, Y)');
-    let theta = {
-      X: e.x,
-      Y: e.y
+    let observations = [];
+    switch (eventName) {
+      case 'click':
+        let observation = this.LPS.literal('click(X, Y)');
+        let theta: any = {
+          X: e.x,
+          Y: e.y
+        };
+        observations.push(observation.substitute(theta));
+        Object.keys(this.objects).forEach((key) => {
+          let obj = this.objects[key];
+          let halfWidth = obj.width / 2;
+          let halfHeight = obj.height / 2;
+          let minX = obj.x - halfWidth;
+          let maxX = obj.x + halfWidth;
+          let minY = obj.y - halfHeight;
+          let maxY = obj.y + halfHeight;
+          if (e.x >= minX && e.x <= maxX && e.y >= minY && e.y <= maxY) {
+            observation = this.LPS.literal('click(ObjectId, X, Y)');
+            theta.ObjectId = key;
+            observations.push(observation.substitute(theta));
+          }
+        });
+        break;
     }
-    let input = observation.substitute(theta).toString()
+    
+    let input = '';
+    observations.forEach((observation) => {
+      if (input !== '') {
+        input += ',';
+      }
+      input += observation.toString();
+    });
+    if (input === '') {
+      return;
+    }
     this.consoleLog('Observing "' + input + '"');
     ipcRenderer.send('lps:observe', { input: input });
   }
