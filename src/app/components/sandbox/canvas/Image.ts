@@ -9,7 +9,9 @@ export class Image implements CanvasObject {
   private halfWidth: number;
   private halfHeight: number;
   
-  hidden: boolean = false;
+  isHidden: boolean = false;
+  isDragEnabled: boolean = false;
+  
   flipHorizontal: boolean = false;
   flipVertical: boolean = false;
   
@@ -73,7 +75,7 @@ export class Image implements CanvasObject {
   }
   
   draw(context: CanvasRenderingContext2D, timestamp: number) {
-    if (this.hidden) {
+    if (this.isHidden) {
       return;
     }
     let newAnimations = [];

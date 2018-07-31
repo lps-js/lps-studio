@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       let obj = <CanvasObject>this.objects[arg.id];
       setTimeout(() => {
         obj.animations.push(() => {
-          obj.hidden = true;
+          obj.isHidden = true;
           this.consoleLog('Hiding "' + arg.id + '"');
           return false;
         });
@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
       let obj = <CanvasObject>this.objects[arg.id];
       setTimeout(() => {
-        obj.hidden = false;
+        obj.isHidden = false;
         this.consoleLog('Showing "' + arg.id + '"');
       }, arg.cycleInterval);
     });

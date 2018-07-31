@@ -4,7 +4,9 @@ export class Circle implements CanvasObject {
   
   x: number;
   y: number;
-  hidden: boolean = false;
+  isHidden: boolean = false;
+  isDragEnabled: boolean = false;
+  
   radius: number;
   animations: Array<Function> = [];
   
@@ -15,7 +17,7 @@ export class Circle implements CanvasObject {
   }
   
   draw(context: CanvasRenderingContext2D, timestamp: number) {
-    if (this.hidden) {
+    if (this.isHidden) {
       return;
     }
     let newAnimations = [];
