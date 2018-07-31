@@ -1,7 +1,7 @@
 <canvas #mainCanvas
     id="mainCanvas"
-    (click)="handleMouseDown($event, 'click')"
-    (mousedown)="handleMouseDown($event, 'mousedown')"
-    (mouseup)="handleMouseDown($event, 'mouseup')"
-    (mousemove)="handleMouseDown($event, 'mousemove')"
+    (click)="handleMouseEvent($event, 'click')"
+    (mousedown)="handleMouseEvent($event, 'mousedown')"
+    (mouseup)="handleMouseEvent($event, 'mouseup')"
+    (mousemove)="handleMouseEvent($event, 'mousemove')"
   ></canvas>
