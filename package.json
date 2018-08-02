@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "homepage": "https://github.com/mauris/lps-studio",
-  "author": "Sam Yong",
+  "author": {
+    "name" : "Sam Yong",
+    "email" : "samyonggit@gmail.com",
+    "url" : "http://mauris.sg/"
+  },
   "main": "main.js",
   "private": true,
   "scripts": {
