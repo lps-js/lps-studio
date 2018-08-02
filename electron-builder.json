@@ -1,5 +1,6 @@
 {
   "productName": "LPS Studio",
+  "artifactName": "lps-studio",
   "directories": {
     "output": "app-builds"
   },
@@ -22,7 +23,9 @@
   "win": {
     "icon": "dist",
     "target": [
-      "portable"
+      "portable",
+      "nsis",
+      "msi"
     ]
   },
   "mac": {
@@ -34,7 +37,8 @@
   "linux": {
     "icon": "dist",
     "target": [
-      "AppImage"
+      "AppImage",
+      "deb"
     ]
   }
 }
