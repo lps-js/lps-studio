@@ -12,7 +12,7 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
 ipcMain.on('lps:start', (event, arg) => {
   let sender = event.sender;
   
-  LPS.load(arg)
+  LPS.loadFile(arg)
     .then((engine) => {
       let queryResult = engine.query(LPS.literal('load_image(Id, Url)'));
       queryResult.forEach((imageTuple) => {
