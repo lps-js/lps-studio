@@ -17,7 +17,8 @@ ipcMain.on('lps:start', (event, arg) => {
       let queryResult = engine.query(LPS.literal('load_image(Id, Url)'));
       queryResult.forEach((imageTuple) => {
         let theta = imageTuple.theta;
-        if (!(theta.Id instanceof LPS.Value) || !(theta.Url instanceof LPS.Value)) {
+        if (!(theta.Id instanceof LPS.Functor)
+            || !(theta.Url instanceof LPS.Functor)) {
           return;
         }
         let id = theta.Id.evaluate();
@@ -26,7 +27,7 @@ ipcMain.on('lps:start', (event, arg) => {
       });
         
       ipcMain.once('lps:terminate', (event, arg) => {
-        engine.terminate();
+        engine.halt();
         ipcMain.removeAllListeners('lps:pause');
         ipcMain.removeAllListeners('lps:unpause');
         ipcMain.removeAllListeners('clicked');
@@ -44,6 +45,14 @@ ipcMain.on('lps:start', (event, arg) => {
       ipcMain.on('lps:observe', (event, arg) => {
         let observation = LPS.literalSet(arg.input);
         engine.observe(observation);
+      });
+      
+      engine.on('warning', (err) => {
+        console.log(err);
+      });
+      
+      engine.on('error', (err) => {
+        console.log(err);
       });
       
       engine.define('draw_image', (id, x, y, width, height, imageId) => {
