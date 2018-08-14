@@ -1,6 +1,5 @@
 {
   "productName": "LPS Studio",
-  "artifactName": "lps-studio",
   "directories": {
     "output": "app-builds"
   },
