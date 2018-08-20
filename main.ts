@@ -48,11 +48,11 @@ ipcMain.on('lps:start', (event, arg) => {
       });
       
       engine.on('warning', (err) => {
-        console.log(err);
+        sender.send('lps-warning', err);
       });
       
       engine.on('error', (err) => {
-        console.log(err);
+        sender.send('lps-error', err);
       });
       
       engine.define('draw_image', (id, x, y, width, height, imageId) => {
@@ -196,7 +196,7 @@ ipcMain.on('lps:start', (event, arg) => {
       engine.run();
     })
     .catch((err) => {
-      console.error(err);
+      sender.send('lps-error', err);
     });
 });
 
