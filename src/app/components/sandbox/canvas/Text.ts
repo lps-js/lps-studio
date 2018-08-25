@@ -1,7 +1,7 @@
 import { CanvasObject } from './CanvasObject';
 
 export class Text implements CanvasObject {
-  position: Array<number> = [0, 0];
+  position: [number, number] = [0, 0];
   caption: string = '';
   font: string = '12px sans-serif';
   maxWidth: number = undefined;

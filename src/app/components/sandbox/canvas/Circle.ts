@@ -3,7 +3,7 @@ import { CanvasObject } from './CanvasObject';
 const PI_2 = Math.PI * 2;
 
 export class Circle implements CanvasObject {
-  position: Array<number> = [0, 0];
+  position: [number, number] = [0, 0];
   isHidden: boolean = false;
   isDragEnabled: boolean = false;
 
