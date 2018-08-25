@@ -1,7 +1,9 @@
 import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
+import * as fs from 'fs';
 import * as url from 'url';
-const LPS = require('lps');
+import * as LPS from 'lps';
+import studioEngineLoader from './src/main/studioEngineLoader';
 
 let win, serve;
 const args = process.argv.slice(1);
@@ -11,200 +13,77 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
 
 ipcMain.on('lps:start', (event, arg) => {
   let sender = event.sender;
-  
-  LPS.loadFile(arg)
+  let programPathname = arg;
+  let programPath = path.dirname(programPathname);
+
+  let executionHaltCleanup = () => {
+    ipcMain.removeAllListeners('lps:pause');
+    ipcMain.removeAllListeners('lps:unpause');
+    ipcMain.removeAllListeners('lps:observe');
+  };
+
+  LPS.loadFile(programPathname)
     .then((engine) => {
-      let queryResult = engine.query(LPS.literal('load_image(Id, Url)'));
-      queryResult.forEach((imageTuple) => {
-        let theta = imageTuple.theta;
-        if (!(theta.Id instanceof LPS.Functor)
-            || !(theta.Url instanceof LPS.Functor)) {
-          return;
-        }
-        let id = theta.Id.evaluate();
-        let url = theta.Url.evaluate();
-        sender.send('load-image', { id: id, url: url });
-      });
-        
-      ipcMain.once('lps:terminate', (event, arg) => {
+      studioEngineLoader(engine, programPath, sender);
+
+      ipcMain.once('lps:halt', (event, arg) => {
         engine.halt();
-        ipcMain.removeAllListeners('lps:pause');
-        ipcMain.removeAllListeners('lps:unpause');
-        ipcMain.removeAllListeners('clicked');
-        ipcMain.removeAllListeners('input-observe');
+        executionHaltCleanup();
+        sender.send('canvas:lpsHalted');
       });
-      
+
       ipcMain.on('lps:pause', (event, arg) => {
         engine.pause();
       });
-      
+
       ipcMain.on('lps:unpause', (event, arg) => {
         engine.unpause();
       });
-      
+
       ipcMain.on('lps:observe', (event, arg) => {
         let observation = LPS.literalSet(arg.input);
         engine.observe(observation);
       });
-      
+
+      engine.on('paused', () => {
+        sender.send('canvas:lpsPaused');
+      });
+
+      engine.on('unpaused', () => {
+        sender.send('canvas:lpsUnpaused');
+      });
+
       engine.on('warning', (err) => {
         sender.send('lps-warning', err);
       });
-      
+
       engine.on('error', (err) => {
-        sender.send('lps-error', err);
-      });
-      
-      engine.define('draw_image', (id, x, y, width, height, imageId) => {
-        let data = {
-          id: id.evaluate(),
-          x: x.evaluate(),
-          y: y.evaluate(),
-          width: width.evaluate(),
-          height: height.evaluate(),
-          imageId: imageId.evaluate()
-        };
-        sender.send('draw-image', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('enable_drag', (id) => {
-        let data = {
-          id: id.evaluate()
-        };
-        sender.send('enable-drag', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('show', (id) => {
-        let data = {
-          id: id.evaluate(),
-          cycleInterval: engine.getCycleInterval()
-        };
-        sender.send('show-object', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('hide', (id) => {
-        let data = {
-          id: id.evaluate(),
-          cycleInterval: engine.getCycleInterval()
-        };
-        sender.send('hide-object', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('flip_horizontal', (id) => {
-        let data = {
-          id: id.evaluate()
-        };
-        sender.send('flip-horizontal', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('clear_flip_horizontal', (id) => {
-        let data = {
-          id: id.evaluate()
-        };
-        sender.send('clear-flip-horizontal', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('set_flip_horizontal', (id) => {
-        let data = {
-          id: id.evaluate()
-        };
-        sender.send('set-flip-horizontal', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('flip_vertical', (id) => {
-        let data = {
-          id: id.evaluate()
-        };
-        sender.send('flip-vertical', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('clear_flip_vertical', (id) => {
-        let data = {
-          id: id.evaluate()
-        };
-        sender.send('clear-flip-vertical', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('set_flip_vertical', (id) => {
-        let data = {
-          id: id.evaluate()
-        };
-        sender.send('set-flip-vertical', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('draw_circle', (id, x, y, radius) => {
-        let data = {
-          id: id.evaluate(),
-          x: x.evaluate(),
-          y: y.evaluate(),
-          radius: radius.evaluate()
-        };
-        sender.send('draw-circle', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('move', (id, x, y) => {
-        let data = {
-          id: id.evaluate(),
-          x: x.evaluate(),
-          y: y.evaluate(),
-          cycleInterval: engine.getCycleInterval()
-        };
-        sender.send('move', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('move_to', (id, x, y) => {
-        let data = {
-          id: id.evaluate(),
-          x: x.evaluate(),
-          y: y.evaluate()
-        };
-        sender.send('move-to', data);
-        return [ { theta: {} } ];
-      });
-      
-      engine.define('move_by', (id, x, y) => {
-        let data = {
-          id: id.evaluate(),
-          x: x.evaluate(),
-          y: y.evaluate(),
-          cycleInterval: engine.getCycleInterval()
-        };
-        sender.send('move-by', data);
-        return [ { theta: {} } ];
+        sender.send('lps-error', err.message);
+        executionHaltCleanup();
       });
 
       engine.on('postCycle', () => {
         sender.send('time-update', { time: engine.getCurrentTime() });
       });
-      
+
       engine.on('done', () => {
         sender.send('done');
+        executionHaltCleanup();
       });
-      
+
+      sender.send('canvas:lpsStart', '');
       engine.run();
     })
     .catch((err) => {
-      sender.send('lps-error', err);
+      sender.send('lps-error', err.message);
+      executionHaltCleanup();
     });
 });
 
 function createWindow() {
-
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
-  
+
   // Create the browser window.
   win = new BrowserWindow({
     x: 0,
@@ -227,7 +106,7 @@ function createWindow() {
     }));
   }
 
-  
+
   win.once('ready-to-show', () => {
     win.show();
     win.webContents.openDevTools();
@@ -240,11 +119,9 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
-  
 }
 
 try {
-
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
@@ -266,7 +143,6 @@ try {
       createWindow();
     }
   });
-
 } catch (e) {
   // Catch Error
   // throw e;
