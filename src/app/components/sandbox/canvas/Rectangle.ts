@@ -1,19 +1,16 @@
 import { CanvasObject } from './CanvasObject';
 
-export class Text implements CanvasObject {
+export class Rectangle implements CanvasObject {
   x: number;
   y: number;
-  caption: string = '';
-  font: string = '12px sans-serif';
-  maxWidth: number = undefined;
-  fillStyle: string = '#000';
-  strokeStyle: string = '#FFF';
-  strokeWeight: number = 0;
-
   isHidden: boolean = false;
   isDragEnabled: boolean = false;
 
-  radius: number;
+  size: Array<number> = [0, 0];
+  strokeWeight: number = 1;
+  strokeStyle: string = '#000';
+  fillStyle: string = '#FFF';
+
   animations: Array<Function> = [];
 
   constructor(x: number, y: number) {
@@ -32,16 +29,16 @@ export class Text implements CanvasObject {
         newAnimations.push(animation);
       }
     });
-
     this.animations = newAnimations;
 
-    context.fillStyle = this.fillStyle;
+    context.beginPath();
     context.strokeStyle = this.strokeStyle;
-    context.font = this.font;
-    context.fillText(this.caption, this.x, this.y, this.maxWidth);
+    context.fillStyle = this.fillStyle;
+
+    context.fillRect(this.x, this.y, this.size[0], this.size[1]);
     if (this.strokeWeight > 0) {
       context.lineWidth = this.strokeWeight;
-      context.strokeText(this.caption, this.x, this.y, this.maxWidth);
+      context.strokeRect(this.x, this.y, this.size[0], this.size[1]);
     }
   }
 }
