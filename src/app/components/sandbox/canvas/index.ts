@@ -4,3 +4,4 @@ export * from './Image';
 export * from './Text';
 export * from './Rectangle';
 export * from './Square';
+export * from './Line';
