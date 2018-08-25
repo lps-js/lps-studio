@@ -3,6 +3,7 @@ import { Circle } from '../components/sandbox/canvas';
 import { Text } from '../components/sandbox/canvas';
 import { Rectangle } from '../components/sandbox/canvas';
 import { Square } from '../components/sandbox/canvas';
+import { Line } from '../components/sandbox/canvas';
 import { Image as ImageObject } from '../components/sandbox/canvas';
 
 const typeMappings = {
@@ -13,7 +14,8 @@ const typeMappings = {
   label: Text,
   rect: Rectangle,
   rectangle: Rectangle,
-  square: Square
+  square: Square,
+  line: Line
 };
 
 @Injectable()
