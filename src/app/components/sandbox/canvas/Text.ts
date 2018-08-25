@@ -1,8 +1,7 @@
 import { CanvasObject } from './CanvasObject';
 
 export class Text implements CanvasObject {
-  x: number;
-  y: number;
+  position: Array<number> = [0, 0];
   caption: string = '';
   font: string = '12px sans-serif';
   maxWidth: number = undefined;
@@ -15,11 +14,6 @@ export class Text implements CanvasObject {
 
   radius: number;
   animations: Array<Function> = [];
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
 
   draw(context: CanvasRenderingContext2D, timestamp: number) {
     if (this.isHidden) {
@@ -38,10 +32,14 @@ export class Text implements CanvasObject {
     context.fillStyle = this.fillStyle;
     context.strokeStyle = this.strokeStyle;
     context.font = this.font;
-    context.fillText(this.caption, this.x, this.y, this.maxWidth);
+    context.fillText(this.caption, this.position[0], this.position[1], this.maxWidth);
     if (this.strokeWeight > 0) {
       context.lineWidth = this.strokeWeight;
-      context.strokeText(this.caption, this.x, this.y, this.maxWidth);
+      context.strokeText(this.caption, this.position[0], this.position[1], this.maxWidth);
     }
+  }
+
+  isPositionHit(posX: number, posY: number) {
+    return false;
   }
 }

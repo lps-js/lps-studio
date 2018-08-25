@@ -1,11 +1,11 @@
 import { CanvasObject } from './CanvasObject';
 
 export class Image implements CanvasObject {
-  x: number;
-  y: number;
-  private _size: Array<number> = [0, 0];
-  private halfWidth: number = 0;
-  private halfHeight: number = 0;
+  private _position: [number, number] = [0, 0];
+  private _size: [number, number] = [0, 0];
+
+  private _canvasPosition: [number, number] = [0, 0];
+  private _rectBottomRight: [number, number] = [0, 0];
 
   isHidden: boolean = false;
   isDragEnabled: boolean = false;
@@ -20,19 +20,29 @@ export class Image implements CanvasObject {
   private imageFlippedVertically: HTMLCanvasElement;
   private imageFlippedBoth: HTMLCanvasElement;
 
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
+  private updatePositionSize() {
+    this._canvasPosition[0] = this._position[0] - this._size[0] / 2;
+    this._canvasPosition[1] = this._position[1] - this._size[1] / 2;
+    this._rectBottomRight[0] = this._canvasPosition[0] + this._size[0];
+    this._rectBottomRight[1] = this._canvasPosition[1] + this._size[1];
   }
 
-  get size(): Array<number> {
+  get position(): [number, number] {
+    return this._position;
+  }
+
+  set position(p: [number, number]) {
+    this._position = p;
+    this.updatePositionSize();
+  }
+
+  get size(): [number, number] {
     return this._size;
   }
 
-  set size(s: Array<number>) {
+  set size(s: [number, number]) {
     this._size = s;
-    this.halfWidth = s[0] / 2;
-    this.halfHeight = s[1] / 2;
+    this.updatePositionSize();
   }
 
   private handleFlips() {
@@ -93,9 +103,20 @@ export class Image implements CanvasObject {
       return;
     }
 
-    let posX = this.x - this.halfWidth;
-    let posY = this.y - this.halfHeight;
     let image = this.handleFlips();
-    context.drawImage(image, posX, posY, this._size[0], this._size[1]);
+    context.drawImage(
+      image,
+      this._canvasPosition[0],
+      this._canvasPosition[1],
+      this._size[0],
+      this._size[1]
+    );
+  }
+
+  isPositionHit(posX: number, posY: number): boolean {
+    return posX >= this._canvasPosition[0]
+      && posX <= this._rectBottomRight[0]
+      && posY >= this._canvasPosition[1]
+      && posY <= this._rectBottomRight[1];
   }
 }
