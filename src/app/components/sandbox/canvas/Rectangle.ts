@@ -66,6 +66,9 @@ export class Rectangle implements CanvasObject {
   }
 
   isPositionHit(posX: number, posY: number): boolean {
+    if (this.isHidden) {
+      return false;
+    }
     return posX >= this._canvasPosition[0]
       && posX <= this._rectBottomRight[0]
       && posY >= this._canvasPosition[1]

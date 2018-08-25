@@ -40,6 +40,7 @@ export class Text implements CanvasObject {
   }
 
   isPositionHit(posX: number, posY: number) {
+    // not supporting clicks on text object
     return false;
   }
 }

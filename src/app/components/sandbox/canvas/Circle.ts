@@ -56,6 +56,9 @@ export class Circle implements CanvasObject {
   }
 
   isPositionHit(posX: number, posY: number): boolean {
+    if (this.isHidden) {
+      return false;
+    }
     let dx = posX - this.position[0];
     let dy = posY - this.position[1];
     let d = dx * dx + dy * dy;
