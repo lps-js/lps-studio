@@ -96,40 +96,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.consoleLog('Time ' + time);
     });
 
-    // ipcRenderer.on('move', (event, arg) => {
-    //   if (this.objects[arg.id] === undefined) {
-    //     return;
-    //   }
-    //   let obj = <CanvasObject>this.objects[arg.id];
-    //   let origin = {
-    //     x: obj.x,
-    //     y: obj.y
-    //   };
-    //   let deltaX = arg.x - origin.x;
-    //   let deltaY = arg.y - origin.y;
-    //   let iteration = 0;
-    //   this.consoleLog('Start moving "' + arg.id + '" from (' + origin.x + ', ' + origin.y + ')');
-    //   let startTime;
-    //   let animateFunc = (timestamp) => {
-    //     if (startTime === undefined) {
-    //       startTime = timestamp;
-    //     }
-    //     let duration = timestamp - startTime;
-    //     if (duration >= arg.cycleInterval) {
-    //       obj.x = arg.x;
-    //       obj.y = arg.y;
-    //       this.consoleLog('End moving "' + arg.id + '" to (' + arg.x + ', ' + arg.y + ')');
-    //       return false;
-    //     }
-    //     let ratio = duration / arg.cycleInterval;
-    //     obj.x = origin.x + ratio * deltaX;
-    //     obj.y = origin.y + ratio * deltaY;
-    //     iteration += 1;
-    //     return true;
-    //   };
-    //   obj.animations.push(animateFunc);
-    // });
-
     this.sandbox.width = window.innerWidth;
     this.sandbox.height = window.innerHeight - timebarHeight;
   }
