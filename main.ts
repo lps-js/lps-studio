@@ -24,8 +24,6 @@ ipcMain.on('lps:start', (event, arg) => {
 
   LPS.loadFile(programPathname)
     .then((engine) => {
-      studioEngineLoader(engine, programPath, sender);
-
       ipcMain.once('lps:halt', (event, arg) => {
         engine.halt();
         executionHaltCleanup();
@@ -63,7 +61,9 @@ ipcMain.on('lps:start', (event, arg) => {
       });
 
       engine.on('postCycle', () => {
-        sender.send('time-update', { time: engine.getCurrentTime() });
+        sender.send('canvas:lpsTimeUpdate', {
+          time: engine.getCurrentTime()
+        });
       });
 
       engine.on('done', () => {
@@ -71,6 +71,9 @@ ipcMain.on('lps:start', (event, arg) => {
         executionHaltCleanup();
       });
 
+      return studioEngineLoader(engine, programPath, sender);
+    })
+    .then((engine) => {
       sender.send('canvas:lpsStart', '');
       engine.run();
     })
