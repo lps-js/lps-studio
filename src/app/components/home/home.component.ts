@@ -81,12 +81,22 @@ export class HomeComponent implements OnInit, OnDestroy {
     ipcRenderer.on('canvas:updateObject', (event, arg) => {
       let id = arg.id;
       let obj = this.canvasObjectService.getObject(id);
+      if (obj === undefined || obj === null) {
+        this.requestStop();
+        this.consoleLog('Error: Invalid object updating for ' + arg.id);
+        return;
+      }
       this.canvasObjectService.updateProperties(obj, arg.properties);
     });
 
     ipcRenderer.on('canvas:animateObject', (event, arg) => {
       let id = arg.id;
       let obj = this.canvasObjectService.getObject(id);
+      if (obj === undefined || obj === null) {
+        this.requestStop();
+        this.consoleLog('Error: Invalid object animate for ' + arg.id);
+        return;
+      }
       obj.addAnimations(arg.duration, arg.properties);
     });
 
