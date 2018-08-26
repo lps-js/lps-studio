@@ -2,6 +2,13 @@ import { CanvasObject } from './CanvasObject';
 import { createAnimationFuncForTuple, createAnimationFuncForNumber } from './AnimationHelper';
 
 const PI_2 = Math.PI * 2;
+const animatablePropertiesTuple = [
+  'position'
+];
+const animatablePropertiesNumber = [
+  'radius',
+  'strokeWeight'
+];
 
 export class Circle implements CanvasObject {
   position: [number, number] = [0, 0];
@@ -15,7 +22,7 @@ export class Circle implements CanvasObject {
   strokeStyle: string = '#000';
   fillStyle: string = '#FFF';
 
-  animations: Array<Function> = [];
+  private animations: Array<Function> = [];
 
   get radius(): number {
     return this._radius;
@@ -62,13 +69,9 @@ export class Circle implements CanvasObject {
 
   addAnimations(duration: number, properties: any) {
     Object.keys(properties).forEach((key) => {
-      if (key === 'position') {
+      if (animatablePropertiesTuple.indexOf(key) !== -1) {
         this.animations.push(createAnimationFuncForTuple(this, key, properties[key], duration));
-      }
-      if (key === 'radius') {
-        this.animations.push(createAnimationFuncForNumber(this, key, properties[key], duration));
-      }
-      if (key === 'strokeWeight') {
+      } else if (animatablePropertiesNumber.indexOf(key) !== -1) {
         this.animations.push(createAnimationFuncForNumber(this, key, properties[key], duration));
       }
     });

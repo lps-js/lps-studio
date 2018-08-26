@@ -1,4 +1,11 @@
 import { CanvasObject } from './CanvasObject';
+import { createAnimationFuncForTuple, createAnimationFuncForNumber } from './AnimationHelper';
+
+const animatablePropertiesTuple = [
+  'position',
+  'size'
+];
+const animatablePropertiesNumber = [];
 
 export class Image implements CanvasObject {
   private _position: [number, number] = [0, 0];
@@ -14,7 +21,8 @@ export class Image implements CanvasObject {
   flipVertical: boolean = false;
 
   image: HTMLImageElement = null;
-  animations: Array<Function> = [];
+
+  private animations: Array<Function> = [];
 
   private imageFlippedHorizontally: HTMLCanvasElement;
   private imageFlippedVertically: HTMLCanvasElement;
@@ -113,7 +121,15 @@ export class Image implements CanvasObject {
     );
   }
 
-  addAnimations(duration: number, properties: any) {}
+  addAnimations(duration: number, properties: any) {
+    Object.keys(properties).forEach((key) => {
+      if (animatablePropertiesTuple.indexOf(key) !== -1) {
+        this.animations.push(createAnimationFuncForTuple(this, key, properties[key], duration));
+      } else if (animatablePropertiesNumber.indexOf(key) !== -1) {
+        this.animations.push(createAnimationFuncForNumber(this, key, properties[key], duration));
+      }
+    });
+  }
 
   isPositionHit(posX: number, posY: number): boolean {
     if (this.isHidden) {

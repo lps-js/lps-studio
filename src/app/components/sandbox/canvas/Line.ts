@@ -1,4 +1,13 @@
 import { CanvasObject } from './CanvasObject';
+import { createAnimationFuncForTuple, createAnimationFuncForNumber } from './AnimationHelper';
+
+const animatablePropertiesTuple = [
+  'start',
+  'end'
+];
+const animatablePropertiesNumber = [
+  'strokeWeight'
+];
 
 export class Line implements CanvasObject {
   start: [number, number] = [0, 0];
@@ -11,8 +20,7 @@ export class Line implements CanvasObject {
   isHidden: boolean = false;
   isDragEnabled: boolean = false;
 
-  radius: number;
-  animations: Array<Function> = [];
+  private animations: Array<Function> = [];
 
   draw(context: CanvasRenderingContext2D, timestamp: number) {
     if (this.isHidden) {
@@ -41,7 +49,15 @@ export class Line implements CanvasObject {
     context.stroke();
   }
 
-  addAnimations(duration: number, properties: any) {}
+  addAnimations(duration: number, properties: any) {
+    Object.keys(properties).forEach((key) => {
+      if (animatablePropertiesTuple.indexOf(key) !== -1) {
+        this.animations.push(createAnimationFuncForTuple(this, key, properties[key], duration));
+      } else if (animatablePropertiesNumber.indexOf(key) !== -1) {
+        this.animations.push(createAnimationFuncForNumber(this, key, properties[key], duration));
+      }
+    });
+  }
 
   isPositionHit(posX: number, posY: number) {
     // not supporting clicks on line object
