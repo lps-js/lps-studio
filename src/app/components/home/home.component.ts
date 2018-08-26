@@ -84,6 +84,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.canvasObjectService.updateProperties(obj, arg.properties);
     });
 
+    ipcRenderer.on('canvas:animateObject', (event, arg) => {
+      let id = arg.id;
+      let obj = this.canvasObjectService.getObject(id);
+      obj.addAnimations(arg.duration, arg.properties);
+    });
+
     ipcRenderer.on('canvas:lpsTimeUpdate', (event, arg) => {
       let time = arg.time;
       this.currentTime = time;

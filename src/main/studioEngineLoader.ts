@@ -89,7 +89,7 @@ export default function studioEngineLoader(engine, programPath, sender) {
       duration: duration.evaluate(),
       properties: processedProperties
     };
-    sender.send('canvasAnimateObject', data);
+    sender.send('canvas:animateObject', data);
     return [ { theta: {} } ];
   });
 
