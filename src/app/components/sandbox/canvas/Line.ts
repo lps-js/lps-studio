@@ -4,7 +4,7 @@ export class Line implements CanvasObject {
   start: [number, number] = [0, 0];
   end: [number, number] = [0, 0];
 
-  lineDash: Array<number> = [];
+  strokeDash: Array<number> = [];
   strokeStyle: string = '#000';
   strokeWeight: number = 1;
 
@@ -32,7 +32,7 @@ export class Line implements CanvasObject {
       return;
     }
 
-    context.setLineDash(this.lineDash);
+    context.setLineDash(this.strokeDash);
     context.strokeStyle = this.strokeStyle;
     context.lineWidth = this.strokeWeight;
     context.beginPath();

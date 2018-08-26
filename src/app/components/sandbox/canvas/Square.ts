@@ -10,6 +10,7 @@ export class Square implements CanvasObject {
   isHidden: boolean = false;
   isDragEnabled: boolean = false;
 
+  strokeDash: Array<number> = [];
   strokeWeight: number = 1;
   strokeStyle: string = '#000';
   fillStyle: string = '#FFF';
@@ -55,6 +56,7 @@ export class Square implements CanvasObject {
     this.animations = newAnimations;
 
     context.beginPath();
+    context.setLineDash(this.strokeDash);
     context.strokeStyle = this.strokeStyle;
     context.fillStyle = this.fillStyle;
 

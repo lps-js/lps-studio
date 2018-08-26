@@ -9,6 +9,7 @@ export class Circle implements CanvasObject {
 
   private _radius: number = 0;
   private _radius2: number = 0;
+  strokeDash: Array<number> = [];
   strokeWeight: number = 1;
   strokeStyle: string = '#000';
   fillStyle: string = '#FFF';
@@ -38,8 +39,10 @@ export class Circle implements CanvasObject {
     this.animations = newAnimations;
 
     context.beginPath();
+    context.setLineDash(this.strokeDash);
     context.strokeStyle = this.strokeStyle;
     context.fillStyle = this.fillStyle;
+
     context.arc(
       this.position[0],
       this.position[1],
@@ -48,6 +51,7 @@ export class Circle implements CanvasObject {
       PI_2,
       true
     );
+
     context.fill();
     if (this.strokeWeight > 0) {
       context.lineWidth = this.strokeWeight;
