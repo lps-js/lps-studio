@@ -1,5 +1,5 @@
 import { CanvasObject } from './CanvasObject';
-import { createAnimationFuncForTuple, createAnimationFuncForNumber } from './AnimationHelper';
+import { createAnimation } from './AnimationHelper';
 
 const animatablePropertiesTuple = [
   'position',
@@ -122,13 +122,14 @@ export class Image implements CanvasObject {
   }
 
   addAnimations(duration: number, properties: any) {
-    Object.keys(properties).forEach((key) => {
-      if (animatablePropertiesTuple.indexOf(key) !== -1) {
-        this.animations.push(createAnimationFuncForTuple(this, key, properties[key], duration));
-      } else if (animatablePropertiesNumber.indexOf(key) !== -1) {
-        this.animations.push(createAnimationFuncForNumber(this, key, properties[key], duration));
-      }
-    });
+    return createAnimation(
+      this,
+      this.animations,
+      duration,
+      animatablePropertiesTuple,
+      animatablePropertiesNumber,
+      properties
+    );
   }
 
   isPositionHit(posX: number, posY: number): boolean {
