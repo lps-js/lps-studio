@@ -1,4 +1,5 @@
 import { CanvasObject } from './CanvasObject';
+import { createAnimationFuncForTuple, createAnimationFuncForNumber } from './AnimationHelper';
 
 const PI_2 = Math.PI * 2;
 
@@ -57,6 +58,20 @@ export class Circle implements CanvasObject {
       context.lineWidth = this.strokeWeight;
       context.stroke();
     }
+  }
+
+  addAnimations(duration: number, properties: any) {
+    Object.keys(properties).forEach((key) => {
+      if (key === 'position') {
+        this.animations.push(createAnimationFuncForTuple(this, key, properties[key], duration));
+      }
+      if (key === 'radius') {
+        this.animations.push(createAnimationFuncForNumber(this, key, properties[key], duration));
+      }
+      if (key === 'strokeWeight') {
+        this.animations.push(createAnimationFuncForNumber(this, key, properties[key], duration));
+      }
+    });
   }
 
   isPositionHit(posX: number, posY: number): boolean {

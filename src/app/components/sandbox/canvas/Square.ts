@@ -77,6 +77,8 @@ export class Square implements CanvasObject {
     }
   }
 
+  addAnimations(duration: number, properties: any) {}
+
   isPositionHit(posX: number, posY: number): boolean {
     if (this.isHidden) {
       return false;

@@ -39,6 +39,8 @@ export class Text implements CanvasObject {
     }
   }
 
+  addAnimations(duration: number, properties: any) {}
+
   isPositionHit(posX: number, posY: number) {
     // not supporting clicks on text object
     return false;

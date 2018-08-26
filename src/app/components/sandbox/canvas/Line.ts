@@ -41,6 +41,8 @@ export class Line implements CanvasObject {
     context.stroke();
   }
 
+  addAnimations(duration: number, properties: any) {}
+
   isPositionHit(posX: number, posY: number) {
     // not supporting clicks on line object
     return false;
