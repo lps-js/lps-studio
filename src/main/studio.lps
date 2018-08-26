@@ -7,3 +7,8 @@ lpsHideObject(Id) from T1 to T2 <-
   lpsUpdateObject(Id, [
     isHidden(1)
   ]) from T1 to T2.
+
+lpsAnimateMoveObject(Id, Duration, X, Y) from T1 to T2 <-
+  lpsAnimateObject(Id, Duration, [
+    position(X, Y)
+  ]) from T1 to T2.
