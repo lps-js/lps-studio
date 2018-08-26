@@ -1,0 +1,9 @@
+lpsShowObject(Id) from T1 to T2 <-
+  lpsUpdateObject(Id, [
+    isHidden(0)
+  ]) from T1 to T2.
+
+lpsHideObject(Id) from T1 to T2 <-
+  lpsUpdateObject(Id, [
+    isHidden(1)
+  ]) from T1 to T2.
