@@ -2,6 +2,8 @@ import * as LPS from 'lps';
 import * as path from 'path';
 import * as fs from 'fs';
 
+import { studioModule } from './studioModule';
+
 const loadImageTerm = LPS.literal('lpsLoadImage(Id, Url)');
 const defineObjectTerm = LPS.literal('lpsDefineObject(Id, Type, Properties)');
 
@@ -80,121 +82,16 @@ export default function studioEngineLoader(engine, programPath, sender) {
     return [ { theta: {} } ];
   });
 
-  engine.define('enable_drag', (id) => {
-    let data = {
-      id: id.evaluate()
-    };
-    sender.send('enable-drag', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('show', (id) => {
+  engine.define('lpsAnimateObject', (id, duration, properties) => {
+    let processedProperties = processPropertiesList(properties);
     let data = {
       id: id.evaluate(),
-      cycleInterval: engine.getCycleInterval()
+      duration: duration.evaluate(),
+      properties: processedProperties
     };
-    sender.send('show-object', data);
+    sender.send('canvasAnimateObject', data);
     return [ { theta: {} } ];
   });
 
-  engine.define('hide', (id) => {
-    let data = {
-      id: id.evaluate(),
-      cycleInterval: engine.getCycleInterval()
-    };
-    sender.send('hide-object', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('flip_horizontal', (id) => {
-    let data = {
-      id: id.evaluate()
-    };
-    sender.send('flip-horizontal', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('clear_flip_horizontal', (id) => {
-    let data = {
-      id: id.evaluate()
-    };
-    sender.send('clear-flip-horizontal', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('set_flip_horizontal', (id) => {
-    let data = {
-      id: id.evaluate()
-    };
-    sender.send('set-flip-horizontal', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('flip_vertical', (id) => {
-    let data = {
-      id: id.evaluate()
-    };
-    sender.send('flip-vertical', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('clear_flip_vertical', (id) => {
-    let data = {
-      id: id.evaluate()
-    };
-    sender.send('clear-flip-vertical', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('set_flip_vertical', (id) => {
-    let data = {
-      id: id.evaluate()
-    };
-    sender.send('set-flip-vertical', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('move', (id, x, y) => {
-    let data = {
-      id: id.evaluate(),
-      x: x.evaluate(),
-      y: y.evaluate(),
-      cycleInterval: engine.getCycleInterval()
-    };
-    sender.send('move', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('move', (id, x, y, n) => {
-    let data = {
-      id: id.evaluate(),
-      x: x.evaluate(),
-      y: y.evaluate(),
-      numCycles: n.evaluate(),
-      cycleInterval: engine.getCycleInterval()
-    };
-    sender.send('move', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('move_to', (id, x, y) => {
-    let data = {
-      id: id.evaluate(),
-      x: x.evaluate(),
-      y: y.evaluate()
-    };
-    sender.send('move-to', data);
-    return [ { theta: {} } ];
-  });
-
-  engine.define('move_by', (id, x, y) => {
-    let data = {
-      id: id.evaluate(),
-      x: x.evaluate(),
-      y: y.evaluate(),
-      cycleInterval: engine.getCycleInterval()
-    };
-    sender.send('move-by', data);
-    return [ { theta: {} } ];
-  });
+  return engine.loadModule(studioModule);
 };
