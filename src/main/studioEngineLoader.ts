@@ -1,6 +1,7 @@
 import * as LPS from 'lps';
 import * as path from 'path';
 import * as fs from 'fs';
+import { Promise } from 'es6-promise';
 
 import { studioModule } from './studioModule';
 
@@ -69,9 +70,6 @@ function processDefineObjectDeclarations(engine, sender) {
 }
 
 export default function studioEngineLoader(engine, programPath, sender) {
-  processLoadImageDeclarations(engine, programPath, sender);
-  processDefineObjectDeclarations(engine, sender);
-
   engine.define('lpsUpdateObject', (id, properties) => {
     let processedProperties = processPropertiesList(properties);
     let data = {
@@ -93,5 +91,13 @@ export default function studioEngineLoader(engine, programPath, sender) {
     return [ { theta: {} } ];
   });
 
-  return engine.loadModule(studioModule);
+  return engine.loadModule(studioModule)
+    .then(() => {
+      return engine.load();
+    })
+    .then(() => {
+      processLoadImageDeclarations(engine, programPath, sender);
+      processDefineObjectDeclarations(engine, sender);
+      return Promise.resolve(engine);
+    });
 };

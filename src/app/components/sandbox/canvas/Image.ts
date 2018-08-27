@@ -31,6 +31,7 @@ export class Image implements CanvasObject {
   private updatePositionSize() {
     this._canvasPosition[0] = this._position[0] - this._size[0] / 2;
     this._canvasPosition[1] = this._position[1] - this._size[1] / 2;
+
     this._rectBottomRight[0] = this._canvasPosition[0] + this._size[0];
     this._rectBottomRight[1] = this._canvasPosition[1] + this._size[1];
   }
