@@ -120,36 +120,38 @@ export class HomeComponent implements OnInit, OnDestroy {
     let theta: any;
 
     let forEachObjectInPosition = (callback) => {
-      this.canvasObjectService.iterateObjects((key: string, obj: CanvasObject) => {
-        if (obj.isPositionHit(e.x, e.y)) {
-          callback(key, obj);
-        }
-      });
-    }
+      this.canvasObjectService
+        .iterateObjects((key: string, obj: CanvasObject) => {
+          if (obj.isPositionHit(e.x, e.y)) {
+            callback(key, obj);
+          }
+        });
+    };
 
     switch (eventName) {
       case 'click':
-        observation = this.LPS.literal('click(X, Y)');
+        observation = this.LPS.literal('lpsClick(X, Y)');
         theta = {
           X: e.x,
           Y: e.y
         };
         observations.push(observation.substitute(theta));
         forEachObjectInPosition((key, obj) => {
-          observation = this.LPS.literal('click(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsClick(ObjectId, X, Y)');
+          console.log('CLICKED  ' + key);
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
         });
         break;
       case 'mousedown':
-        observation = this.LPS.literal('mousedown(X, Y)');
+        observation = this.LPS.literal('lpsMousedown(X, Y)');
         theta = {
           X: e.x,
           Y: e.y
         };
         observations.push(observation.substitute(theta));
         forEachObjectInPosition((key, obj) => {
-          observation = this.LPS.literal('mousedown(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsMousedown(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
         });
@@ -166,20 +168,20 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           // was dragging
 
-          observation = this.LPS.literal('draggedTo(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsDraggedTo(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
           obj.isDragEnabled = false;
         });
 
-        observation = this.LPS.literal('mouseup(X, Y)');
+        observation = this.LPS.literal('lpsMouseup(X, Y)');
         theta = {
           X: e.x,
           Y: e.y
         };
         observations.push(observation.substitute(theta));
         forEachObjectInPosition((key, obj) => {
-          observation = this.LPS.literal('mouseup(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsMouseup(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
         });
@@ -199,14 +201,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           });
         }
 
-        observation = this.LPS.literal('mousemove(X, Y)');
+        observation = this.LPS.literal('lpsMousemove(X, Y)');
         theta = {
           X: e.x,
           Y: e.y
         };
         observations.push(observation.substitute(theta));
         forEachObjectInPosition((key, obj) => {
-          observation = this.LPS.literal('mousemove(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsMousemove(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
         });
