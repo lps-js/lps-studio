@@ -22,7 +22,10 @@ ipcMain.on('lps:start', (event, arg) => {
     ipcMain.removeAllListeners('lps:observe');
   };
 
-  LPS.loadFile(programPathname)
+  LPS.createFromFile(programPathname)
+    .then((engine) => {
+      return studioEngineLoader(engine, programPath, sender);
+    })
     .then((engine) => {
       ipcMain.once('lps:halt', (event, arg) => {
         engine.halt();
@@ -71,9 +74,6 @@ ipcMain.on('lps:start', (event, arg) => {
         executionHaltCleanup();
       });
 
-      return studioEngineLoader(engine, programPath, sender);
-    })
-    .then((engine) => {
       sender.send('canvas:lpsStart', '');
       engine.run();
     })
@@ -108,7 +108,6 @@ function createWindow() {
       slashes: true
     }));
   }
-
 
   win.once('ready-to-show', () => {
     win.show();
