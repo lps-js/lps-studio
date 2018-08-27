@@ -60,6 +60,10 @@ export class CanvasObjectService {
         return;
       }
       if (typeof obj[k] === 'boolean') {
+        if (properties[k][0] === 'flip') {
+          obj[k] = !obj[k];
+          return;
+        }
         obj[k] = (properties[k][0] === 'true'
           || properties[k][0] === 'on'
           || properties[k][0] === 1);
