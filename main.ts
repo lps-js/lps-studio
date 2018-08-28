@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as url from 'url';
 import * as LPS from 'lps';
 import menuBuilder from './main/menu';
-import createWindow from './main/createWindow';
+import createMainWindow from './main/createMainWindow';
 import './main/engineManager';
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
@@ -15,7 +15,7 @@ try {
   // Some APIs can only be used after this event occurs.
   app.on('ready', () => {
     menuBuilder();
-    createWindow();
+    createMainWindow();
   });
 
   // Quit when all windows are closed.
@@ -31,7 +31,7 @@ try {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+      createMainWindow();
     }
   });
 } catch (e) {

@@ -1,5 +1,5 @@
 import { app, Menu, MenuItemConstructorOptions, shell, BrowserWindow } from 'electron';
-import createWindow from './createWindow';
+import createMainWindow from './createMainWindow';
 
 const REPORT_ISSUE_URL = 'https://github.com/mauris/lps-studio/issues';
 
@@ -34,7 +34,7 @@ export default function menuBuilder() {
       label: 'New Window',
       accelerator: 'CmdOrCtrl+N',
       click() {
-        createWindow();
+        createMainWindow();
       }
     },
     {
