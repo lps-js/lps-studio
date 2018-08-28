@@ -2,7 +2,6 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
 import { EventEmitter, Input, Output } from '@angular/core';
 import { CanvasObject } from './canvas/CanvasObject';
-import { Circle } from './canvas/Circle';
 
 @Component({
   selector: 'sandbox',
@@ -13,26 +12,26 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('mainCanvas') mainCanvas: ElementRef;
   public context: CanvasRenderingContext2D;
-  
+
   private refreshInterval: number = 20;
-  
+
   @Input() objects: Array<CanvasObject> = new Array<CanvasObject>();
-  
+
   @Output() onMouse = new EventEmitter<Object>();
   @Output() ready = new EventEmitter();
-  
+
   private _isMouseDown: boolean = false;
-  
+
   private _width: number = 400;
   private _height: number = 400;
 
   constructor() {
   }
-  
+
   get isMouseDown(): boolean {
     return this._isMouseDown;
   }
-  
+
   get width(): number {
     return this._width;
   }
@@ -42,7 +41,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     this._width = name;
     this.mainCanvas.nativeElement.width = this._width;
   }
-    
+
   get height(): number {
     return this._height;
   }
@@ -54,7 +53,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {}
-  
+
   ngAfterViewInit() {
     setTimeout(() => {
       this.mainCanvas.nativeElement.width = this._width;
@@ -66,21 +65,21 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }, 0);
   }
-  
+
   handleMouseEvent(event, name) {
     event.stopPropagation();
     let x = event.offsetX;
     let y = event.offsetY;
-    
+
     if (name === 'mousedown') {
       this._isMouseDown = true;
     } else if (name === 'mouseup') {
       this._isMouseDown = false;
     }
-    
+
     this.onMouse.emit({ event: name, x: x, y: y });
   }
-  
+
   private canvasDraw(timestamp: number) {
     if (this.context === null) {
       return;
@@ -94,7 +93,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
       obj.draw(this.context, timestamp);
     });
   }
-  
+
   ngOnDestroy() {
   }
 

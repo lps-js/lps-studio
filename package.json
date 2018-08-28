@@ -4,9 +4,9 @@
   "description": "",
   "homepage": "https://github.com/mauris/lps-studio",
   "author": {
-    "name" : "Sam Yong",
-    "email" : "samyonggit@gmail.com",
-    "url" : "http://mauris.sg/"
+    "name": "Sam Yong",
+    "email": "samyonggit@gmail.com",
+    "url": "http://mauris.sg/"
   },
   "main": "main.js",
   "private": true,
