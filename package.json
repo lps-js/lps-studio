@@ -1,7 +1,7 @@
 {
-  "name": "angular-electron",
+  "name": "lps-studio",
   "version": "1.0.0",
-  "description": "",
+  "description": "Visual storytelling tool using Logic Production Systems (LPS), powered by lps.js",
   "homepage": "https://github.com/mauris/lps-studio",
   "author": {
     "name": "Sam Yong",
@@ -10,6 +10,7 @@
   },
   "main": "main.js",
   "private": true,
+  "license": "BSD-3-Clause",
   "scripts": {
     "postinstall": "npm run postinstall:electron && electron-builder install-app-deps",
     "postinstall:web": "node postinstall-web",
