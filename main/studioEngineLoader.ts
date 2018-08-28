@@ -100,4 +100,4 @@ export default function studioEngineLoader(engine, programPath, sender) {
       processDefineObjectDeclarations(engine, sender);
       return Promise.resolve(engine);
     });
-};
+}

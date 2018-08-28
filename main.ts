@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
 import * as LPS from 'lps';
-import studioEngineLoader from './src/main/studioEngineLoader';
+import studioEngineLoader from './main/studioEngineLoader';
 
 let win, serve;
 const args = process.argv.slice(1);

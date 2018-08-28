@@ -12,7 +12,7 @@ export function studioModule(engine, program) {
     program.augment(studioProgramCached);
     return Promise.resolve(engine);
   }
-  return LPS.ProgramFactory.fromFile(path.join(__dirname, 'studio.lps'))
+  return LPS.ProgramFactory.fromFile(`${__dirname}/studio.lps`)
     .then((studioProgram) => {
       studioProgramCached = studioProgram;
       program.augment(studioProgram);
