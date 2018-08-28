@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
+import { ipcMain } from 'electron';
 import studioEngineLoader from './studioEngineLoader';
 import * as LPS from 'lps';
 import * as path from 'path';
