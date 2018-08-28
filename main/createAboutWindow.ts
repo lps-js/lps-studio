@@ -49,7 +49,9 @@ export default function createAboutWindow() {
   }
 
   aboutWindowSingleton.on('focus', () => {
-    Menu.setApplicationMenu(aboutWindowMenu);
+    if (process.platform === 'darwin') {
+      Menu.setApplicationMenu(aboutWindowMenu);
+    }
   });
 
   // aboutWindowSingleton.once('ready-to-show', () => {
