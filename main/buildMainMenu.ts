@@ -7,17 +7,19 @@ const REPORT_ISSUE_URL = 'https://github.com/mauris/lps-studio/issues';
 export default function buildMainMenu() {
   let menuTemplate: MenuItemConstructorOptions[] = [];
 
+  let aboutMenuItem: MenuItemConstructorOptions = {
+    label: 'About LPS Studio',
+    click() {
+      createAboutWindow();
+    }
+  };
+
   if (process.platform === 'darwin') {
     // for macOS
     menuTemplate.push({
       label: 'Menu',
       submenu: [
-        {
-          label: 'About LPS Studio',
-          click() {
-            createAboutWindow();
-          }
-        },
+        aboutMenuItem,
         {
           label: 'View License'
         },
@@ -127,9 +129,7 @@ export default function buildMainMenu() {
         {
           label: 'View License'
         },
-        {
-          label: 'About LPS Studio'
-        }
+        aboutMenuItem
       ]
     });
   }
