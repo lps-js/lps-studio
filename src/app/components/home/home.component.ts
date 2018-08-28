@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, HostListener, ElementRef } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ipcRenderer } from 'electron';
 import { SandboxComponent } from '../sandbox/sandbox.component';
 import { CanvasObject } from '../sandbox/canvas/CanvasObject';
@@ -10,7 +11,6 @@ import * as path from 'path';
 const timebarHeight = 45; // px
 
 @Component({
-  selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -33,7 +33,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   private windowId: number;
 
   @ViewChild('sandbox') sandbox: SandboxComponent;
+
   constructor(
+    private titleService: Title,
     private electronService: ElectronService,
     private canvasObjectService: CanvasObjectService
   ) {
@@ -341,6 +343,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.currentFile = filename;
 
       const name = path.basename(this.currentFile);
+
+
+      this.titleService.setTitle(name + ' - ' + path.dirname(filename));
 
       const data = {
         pathname: filename,
