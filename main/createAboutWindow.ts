@@ -28,6 +28,9 @@ export default function createAboutWindow() {
     title: 'About LPS Studio',
     width: aboutDialogSize[0],
     height: aboutDialogSize[1],
+    minimizable: false,
+    resizable: false,
+    maximizable: false,
     show: true
   });
 
