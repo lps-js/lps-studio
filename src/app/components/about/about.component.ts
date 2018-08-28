@@ -10,7 +10,9 @@ const metadata = require('../../../../package.json');
   styleUrls: ['./about.component.scss']
 })
 export class AboutComponent {
-  private version: string = metadata.version;
+  // app version
+  version: string = metadata.version;
+
   constructor(
     private electronService: ElectronService,
     private titleService: Title
