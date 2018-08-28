@@ -25,10 +25,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   isDone: boolean = false;
   isPaused: boolean = false;
   isRunning: boolean = false;
+  isStopping: boolean = false;
   isMouseDown: boolean = false;
 
   currentFile: string;
   private LPS;
+  private windowId: number;
 
   @ViewChild('sandbox') sandbox: SandboxComponent;
   constructor(
@@ -36,20 +38,30 @@ export class HomeComponent implements OnInit, OnDestroy {
     private canvasObjectService: CanvasObjectService
   ) {
     this.LPS = this.electronService.remote.require('lps');
+    this.windowId = this.electronService.remote.getCurrentWindow().id;
   }
 
   ngOnInit() {
+    ipcRenderer.on('canvas:openFile', (event, arg) => {
+      this.requestOpenFile();
+    });
+
     ipcRenderer.on('canvas:lpsStart', (event, arg) => {
       this.isRunning = true;
     });
 
-    ipcRenderer.on('lps-error', (event, arg) => {
+    ipcRenderer.on('canvas:lpsErrorred', (event, arg) => {
       this.consoleLog('Error: ' + arg);
       this.isRunning = false;
     });
 
-    ipcRenderer.on('done', (event, arg) => {
+    ipcRenderer.on('canvas:lpsWarning', (event, arg) => {
+      this.consoleLog('Warning: ' + arg);
+    });
+
+    ipcRenderer.on('canvas:lpsHalted', (event, arg) => {
       this.isDone = true;
+      this.isStopping = false;
       this.isRunning = false;
       this.currentTime = 'Done';
       this.consoleLog('LPS Program execution complete');
@@ -225,7 +237,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (input === '') {
       return;
     }
-    ipcRenderer.send('lps:observe', { input: input });
+    const data = {
+      input: input,
+      windowId: this.windowId
+    };
+    ipcRenderer.send('lps:observe', data);
   }
 
   consoleLog(message: string) {
@@ -246,7 +262,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
     this.isPaused = true;
-    ipcRenderer.send('lps:pause');
+    ipcRenderer.send('lps:pause', { windowId: this.windowId });
     this.consoleLog('Pausing LPS program execution...');
   }
 
@@ -255,7 +271,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
     this.isPaused = false;
-    ipcRenderer.send('lps:unpause');
+    ipcRenderer.send('lps:unpause', { windowId: this.windowId });
     this.consoleLog('Resuming LPS program execution...');
   }
 
@@ -263,8 +279,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (!this.isRunning) {
       return;
     }
+    this.isStopping = true;
     this.isPaused = false;
-    ipcRenderer.send('lps:halt');
+    ipcRenderer.send('lps:halt', { windowId: this.windowId });
     this.consoleLog('Stopping LPS program execution...');
   }
 
@@ -278,7 +295,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.canvasObjectService.reset();
     this.sandbox.objects = [];
 
-    ipcRenderer.send('lps:start', this.currentFile);
+    const data = {
+      pathname: this.currentFile,
+      windowId: this.windowId
+    };
+    ipcRenderer.send('lps:start', data);
 
     this.currentTime = 'Loading ' + name;
     this.consoleLog('Restarting ' + name);
@@ -288,6 +309,16 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   requestOpenFile() {
+    if (this.isStopping) {
+      return;
+    }
+    if (this.isRunning) {
+      this.requestStop();
+      ipcRenderer.once('lps:halted', () => {
+        this.requestOpenFile();
+      });
+      return;
+    }
     const dialog = this.electronService.remote.dialog;
     let options: OpenDialogOptions = {
       filters: [
@@ -311,7 +342,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       const name = path.basename(this.currentFile);
 
-      ipcRenderer.send('lps:start', filename);
+      const data = {
+        pathname: filename,
+        windowId: this.windowId
+      };
+      ipcRenderer.send('lps:start', data);
 
       this.consoleLog('Starting ' + name);
       this.currentTime = 'Loading ' + name;
@@ -322,12 +357,12 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    ipcRenderer.send('lps:terminate');
+    this.requestStop();
   }
 
   @HostListener('window:unload', [ '$event' ])
   unloadHandler(event) {
-    ipcRenderer.send('lps:terminate');
+    this.requestStop();
   }
 
   @HostListener('window:resize', [ '$event' ])
@@ -341,7 +376,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
     this.consoleLog('Observing "' + this.consoleInput + '"');
-    ipcRenderer.send('input-observe', { input: this.consoleInput });
+    ipcRenderer.send('input-observe', { input: this.consoleInput, windowId: this.windowId });
     this.consoleInput = '';
   }
 
