@@ -36,6 +36,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
     "lps": "^1.0.9",
+    "es6-promise": "^4.2.4",
     "popper.js": "^1.14.3"
   },
   "devDependencies": {
@@ -61,7 +62,6 @@
     "electron": "^2.0.8",
     "electron-builder": "20.14.7",
     "electron-reload": "1.2.2",
-    "es6-promise": "^4.2.4",
     "jasmine-core": "3.1.0",
     "jasmine-spec-reporter": "4.2.1",
     "karma": "^3.0.0",
