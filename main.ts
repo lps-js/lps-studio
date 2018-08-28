@@ -111,7 +111,9 @@ function createWindow() {
 
   win.once('ready-to-show', () => {
     win.show();
-    win.webContents.openDevTools();
+    if (process.env.NODE_ENV === 'development') {
+      win.webContents.openDevTools();
+    }
   });
 
   // Emitted when the window is closed.
