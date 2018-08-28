@@ -5,7 +5,7 @@ import * as url from 'url';
 import * as LPS from 'lps';
 import studioEngineLoader from './main/studioEngineLoader';
 
-let win, serve;
+let serve;
 const args = process.argv.slice(1);
 serve = args.some(val => val === '--serve');
 
@@ -88,7 +88,7 @@ function createWindow() {
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
 
   // Create the browser window.
-  win = new BrowserWindow({
+  let win = new BrowserWindow({
     x: 0,
     y: 0,
     title: 'LPS Studio',
@@ -143,7 +143,7 @@ try {
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (win === null) {
+    if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
   });
