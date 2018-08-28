@@ -1,9 +1,10 @@
 import { app, Menu, MenuItemConstructorOptions, shell, BrowserWindow } from 'electron';
 import createMainWindow from './createMainWindow';
+import createAboutWindow from './createAboutWindow';
 
 const REPORT_ISSUE_URL = 'https://github.com/mauris/lps-studio/issues';
 
-export default function menuBuilder() {
+export default function buildMainMenu() {
   let menuTemplate: MenuItemConstructorOptions[] = [];
 
   if (process.platform === 'darwin') {
@@ -12,7 +13,10 @@ export default function menuBuilder() {
       label: 'Menu',
       submenu: [
         {
-          label: 'About LPS Studio'
+          label: 'About LPS Studio',
+          click() {
+            createAboutWindow();
+          }
         },
         {
           label: 'View License'
@@ -108,6 +112,7 @@ export default function menuBuilder() {
   } else {
     menuTemplate.push({
       label: 'Help',
+      role: 'help',
       submenu: [
         {
           label: 'Welcome Guide'
@@ -130,6 +135,5 @@ export default function menuBuilder() {
   }
   // help menu
 
-  let menu = Menu.buildFromTemplate(menuTemplate);
-  Menu.setApplicationMenu(menu);
+  return Menu.buildFromTemplate(menuTemplate)
 }

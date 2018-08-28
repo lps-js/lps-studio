@@ -3,7 +3,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as url from 'url';
 import * as LPS from 'lps';
-import menuBuilder from './main/menu';
 import createMainWindow from './main/createMainWindow';
 import './main/engineManager';
 
@@ -14,7 +13,6 @@ try {
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on('ready', () => {
-    menuBuilder();
     createMainWindow();
   });
 

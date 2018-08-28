@@ -1,9 +1,12 @@
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
+import { app, Menu, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import buildMainMenu from './buildMainMenu';
 
 const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
+
+const mainWindowMenu = buildMainMenu();
 
 export default function createMainWindow() {
   const size = screen.getPrimaryDisplay().workAreaSize;
@@ -29,6 +32,10 @@ export default function createMainWindow() {
       slashes: true
     }));
   }
+
+  window.on('focus', () => {
+    Menu.setApplicationMenu(mainWindowMenu);
+  });
 
   window.once('ready-to-show', () => {
     window.show();
