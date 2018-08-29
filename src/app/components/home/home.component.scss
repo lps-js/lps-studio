@@ -10,12 +10,15 @@ app-root, app-home, .container-fluid, .row {
   height: 35px;
   border-bottom: 1px solid #ccc;
   background: #eee;
-  margin-right:320px;
   padding: 2px;
   
   .timing {
     padding: 10px 4px;
     line-height: 2;
+  }
+  
+  &.console-shown {
+    margin-right:320px;
   }
 }
 

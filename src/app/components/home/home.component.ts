@@ -27,6 +27,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   isRunning: boolean = false;
   isStopping: boolean = false;
   isMouseDown: boolean = false;
+  isConsoleHidden: boolean = false;
 
   currentFile: string;
   private LPS;
@@ -359,6 +360,10 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.isPaused = false;
       this.isDone = false;
     });
+  }
+
+  toggleConsoleView() {
+    this.isConsoleHidden = !this.isConsoleHidden;
   }
 
   ngOnDestroy() {

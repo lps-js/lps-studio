@@ -1,6 +1,6 @@
 <div class="container-fluid p-0 dark-theme">
   <div class="row m-0">
-    <div class="console-view">
+    <div class="console-view" *ngIf="!isConsoleHidden">
       <div class="console-output" #consoleOutput>
         <div #consoleOutputInner class="console-output-inner">
           <div *ngFor="let message of messages">
@@ -13,23 +13,27 @@
       </div>
     </div>
     <div  class="col-md-12 p-0">
-      <div class="timebar">
+      <div class="timebar" [ngClass]="{'console-shown': !isConsoleHidden}">
         <div class="float-right">
           <div class="btn-group">
-            <button class="btn btn-dark btn-sm"*ngIf="isRunning && !isPaused" (click)="requestPause()">
+            <button class="btn btn-dark btn-sm" *ngIf="isRunning && !isPaused" (click)="requestPause()">
               <i class="fa fa-pause"></i>
             </button>
-            <button class="btn btn-dark btn-sm"*ngIf="isRunning && isPaused" (click)="requestResume()">
+            <button class="btn btn-dark btn-sm" *ngIf="isRunning && isPaused" (click)="requestResume()">
               <i class="fa fa-play"></i>
             </button>
-            <button class="btn btn-dark btn-sm"*ngIf="isRunning" (click)="requestStop()">
+            <button class="btn btn-dark btn-sm" *ngIf="isRunning" (click)="requestStop()">
               <i class="fa fa-stop"></i>
             </button>
-            <button class="btn btn-dark btn-sm"*ngIf="!isRunning" (click)="requestOpenFile()">
+            <button class="btn btn-dark btn-sm" *ngIf="!isRunning" (click)="requestOpenFile()">
               <i class="fa fa-folder-open-o"></i>
             </button>
             <button class="btn btn-dark btn-sm" *ngIf="!isRunning && currentFile !== undefined" (click)="requestRestart()">
               <i class="fa fa-refresh"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" (click)="toggleConsoleView()">
+              <i class="fa fa-chevron-right" *ngIf="!isConsoleHidden"></i>
+              <i class="fa fa-chevron-left" *ngIf="isConsoleHidden"></i>
             </button>
           </div>
           
