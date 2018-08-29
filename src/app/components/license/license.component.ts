@@ -11,6 +11,7 @@ const licenses = require('../../../../_licenses.json');
 })
 export class LicenseComponent {
   licenses = licenses;
+  isShown: any = {};
 
   constructor(
     private electronService: ElectronService,
@@ -19,7 +20,11 @@ export class LicenseComponent {
     this.titleService.setTitle('LPS Studio Licensing Information');
   }
 
-  openLink(link: string) {
+  openLink($event: Event, link: string) {
+    if (!link.startsWith('https://') && !link.startsWith('http://')) {
+      return;
+    }
     this.electronService.remote.shell.openExternal(link);
+    $event.preventDefault();
   }
 }
