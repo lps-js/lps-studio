@@ -5,8 +5,8 @@
       <p>version {{version}}</p>
     </div>
     <div class="footer-container">
-      <a href="#" (click)="openLink('https://github.com/mauris/lps-studio')">Github</a>
-      <!-- <a href="#" (click)="openLink('https://github.com/mauris/lps-studio')">Licensing Information</a> -->
+      <a href="#" (click)="openLink($event, 'https://github.com/mauris/lps-studio')">Github</a>
+      <a href="#" (click)="openLicenseWindow($event)">Licensing Information</a>
     </div>
   </div>
 </div>

@@ -20,7 +20,16 @@ export class AboutComponent {
     this.titleService.setTitle('About LPS Studio');
   }
 
-  openLink(link: string) {
+  openLink($event: Event, link: string) {
+    if (!link.startsWith('https://') && !link.startsWith('http://')) {
+      return;
+    }
     this.electronService.remote.shell.openExternal(link);
+    $event.preventDefault();
+  }
+
+  openLicenseWindow($event: Event) {
+    ipcRenderer.send('app:openLicenseWindow');
+    $event.preventDefault();
   }
 }
