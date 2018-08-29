@@ -1,10 +1,11 @@
 import { app, Menu, MenuItemConstructorOptions, shell, BrowserWindow } from 'electron';
 import createMainWindow from './createMainWindow';
 import createAboutWindow from './createAboutWindow';
+import createLicenseWindow from './createLicenseWindow';
 
 const REPORT_ISSUE_URL = 'https://github.com/mauris/lps-studio/issues';
 
-export default function buildMainMenu() {
+export default function buildAboutMenu() {
   let menuTemplate: MenuItemConstructorOptions[] = [];
 
   let aboutMenuItem: MenuItemConstructorOptions = {
@@ -21,7 +22,10 @@ export default function buildMainMenu() {
       submenu: [
         aboutMenuItem,
         {
-          label: 'View License'
+          label: 'View License',
+          click() {
+            createLicenseWindow();
+          }
         },
         { type: 'separator' },
         {
@@ -116,7 +120,10 @@ export default function buildMainMenu() {
         },
         { type: 'separator' },
         {
-          label: 'View License'
+          label: 'View License',
+          click() {
+            createLicenseWindow();
+          }
         },
         aboutMenuItem
       ]
