@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import * as url from 'url';
 import * as LPS from 'lps';
 import createMainWindow from './main/createMainWindow';
+import { getNumOfMainWindow } from './main/createMainWindow';
 import createLicenseWindow from './main/createLicenseWindow';
 import './main/engineManager';
 
@@ -31,6 +32,9 @@ try {
   // Some APIs can only be used after this event occurs.
   app.on('ready', () => {
     createMainWindow();
+    // if (isFirstRun) {
+    //
+    // }
   });
 
   // Quit when all windows are closed.
@@ -45,7 +49,7 @@ try {
   app.on('activate', () => {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) {
+    if (process.platform === 'darwin' && getNumOfMainWindow() === 0) {
       createMainWindow();
     }
   });
