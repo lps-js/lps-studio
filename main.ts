@@ -4,9 +4,14 @@ import * as fs from 'fs';
 import * as url from 'url';
 import * as LPS from 'lps';
 import createMainWindow from './main/createMainWindow';
+import createLicenseWindow from './main/createLicenseWindow';
 import './main/engineManager';
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
+
+ipcMain.on('app:openLicenseWindow', () => {
+  createLicenseWindow();
+});
 
 try {
   // This method will be called when Electron has finished
