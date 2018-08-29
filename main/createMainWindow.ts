@@ -8,6 +8,12 @@ const serve = args.some(val => val === '--serve');
 
 const mainWindowMenu = buildMainMenu();
 
+let numOfMainWindow = 0;
+
+export function getNumOfMainWindow() {
+  return numOfMainWindow;
+}
+
 export default function createMainWindow() {
   const size = screen.getPrimaryDisplay().workAreaSize;
 
@@ -43,6 +49,7 @@ export default function createMainWindow() {
       window.webContents.openDevTools();
     }
   });
+  numOfMainWindow += 1;
 
   // Emitted when the window is closed.
   window.once('closed', () => {
@@ -50,5 +57,6 @@ export default function createMainWindow() {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     window = null;
+    numOfMainWindow -= 1;
   });
 }
