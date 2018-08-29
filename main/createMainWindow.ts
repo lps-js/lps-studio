@@ -14,6 +14,8 @@ export function getNumOfMainWindow() {
   return numOfMainWindow;
 }
 
+const minSize = [ 500, 300 ];
+
 export default function createMainWindow() {
   const size = screen.getPrimaryDisplay().workAreaSize;
 
@@ -24,6 +26,8 @@ export default function createMainWindow() {
     title: 'LPS Studio',
     width: size.width,
     height: size.height,
+    minWidth: minSize[0],
+    minHeight: minSize[1],
     show: false
   });
 
