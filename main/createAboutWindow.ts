@@ -16,6 +16,7 @@ let aboutWindowSingleton: BrowserWindow = null;
 
 export default function createAboutWindow() {
   if (aboutWindowSingleton !== null) {
+    aboutWindowSingleton.show();
     aboutWindowSingleton.focus();
     return;
   }
@@ -34,7 +35,7 @@ export default function createAboutWindow() {
     minimizable: false,
     resizable: false,
     maximizable: false,
-    show: true
+    show: false
   });
 
   if (serve) {
@@ -57,15 +58,14 @@ export default function createAboutWindow() {
     }
   });
 
-  // aboutWindowSingleton.once('ready-to-show', () => {
-  //   aboutWindowSingleton.show();
-  // });
+  aboutWindowSingleton.once('ready-to-show', () => {
+    aboutWindowSingleton.show();
+  });
 
   // Emitted when the window is closed.
-  aboutWindowSingleton.once('closed', () => {
-    // Dereference the window object, usually you would store window
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    aboutWindowSingleton = null;
+  aboutWindowSingleton.on('close', (event) => {
+    // hide window for reuse
+    event.preventDefault();
+    aboutWindowSingleton.hide();
   });
 }

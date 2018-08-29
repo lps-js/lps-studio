@@ -16,6 +16,7 @@ let licenseWindowSingleton: BrowserWindow = null;
 
 export default function createLicenseWindow() {
   if (licenseWindowSingleton !== null) {
+    licenseWindowSingleton.show();
     licenseWindowSingleton.focus();
     return;
   }
@@ -34,7 +35,7 @@ export default function createLicenseWindow() {
     minimizable: false,
     resizable: false,
     maximizable: false,
-    show: true
+    show: false
   });
 
   if (serve) {
@@ -57,15 +58,14 @@ export default function createLicenseWindow() {
     }
   });
 
-  // licenseWindowSingleton.once('ready-to-show', () => {
-  //   licenseWindowSingleton.show();
-  // });
+  licenseWindowSingleton.once('ready-to-show', () => {
+    licenseWindowSingleton.show();
+  });
 
   // Emitted when the window is closed.
-  licenseWindowSingleton.once('closed', () => {
-    // Dereference the window object, usually you would store window
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    licenseWindowSingleton = null;
+  licenseWindowSingleton.once('close', (event) => {
+    // hide window for reuse
+    event.preventDefault();
+    licenseWindowSingleton.hide();
   });
 }
