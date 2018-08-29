@@ -5,8 +5,7 @@ const licenseOverrides = require('./license-overrides.js');
 const appRootPath = path.resolve(__dirname, '../');
 const legalEagleOptions = {
   path: appRootPath,
-  overrides: licenseOverrides,
-  omitPermissive: true
+  overrides: licenseOverrides
 };
 const targetOutputFile = '_licenses.json';
 
