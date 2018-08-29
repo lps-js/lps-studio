@@ -64,6 +64,17 @@ app-root, app-home, .container-fluid, .row {
   }
 }
 
+.no-program-overlay {
+  position: absolute;
+  top: 60px;
+  left: 0px;
+  bottom:0px;
+  right: 0px;
+  &.console-shown {
+    right: $consoleWidth;
+  }
+}
+
 .console-output {
   color: #333;
   background: #efefef;

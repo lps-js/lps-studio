@@ -10,6 +10,12 @@ import * as path from 'path';
 
 const timebarHeight = 45; // px
 
+const emptyScreenMessages = [
+  'Open a LPS Studio program using the folder icon on the toolbar.',
+  'What story will you tell today?',
+  '"Life is either a daring adventure or nothing." - Helen Keller'
+]
+
 @Component({
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
@@ -28,6 +34,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   isStopping: boolean = false;
   isMouseDown: boolean = false;
   isConsoleHidden: boolean = false;
+
+  emptyCanvasMessage: string = emptyScreenMessages[Math.floor(Math.random() * emptyScreenMessages.length)];
 
   currentFile: string;
   private LPS;

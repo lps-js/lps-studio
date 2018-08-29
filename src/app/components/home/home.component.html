@@ -12,7 +12,7 @@
         <input type="text" [(ngModel)]="consoleInput" (keypress)="consoleInputKeypress($event)" [disabled]="!isRunning" placeholder="Enter observations here...">
       </div>
     </div>
-    <div  class="col-md-12 p-0">
+    <div class="col-md-12 p-0">
       <div class="timebar" [ngClass]="{'console-shown': !isConsoleHidden}">
         <div class="float-right">
           <div class="btn-group">
@@ -40,8 +40,14 @@
         </div>
         <span class="timing">{{ currentTime }}</span>
       </div>
-    
       <sandbox #sandbox id="sandbox" (onMouse)="handleCanvasMouseEvent($event)" (ready)="handleCanvasReady()"></sandbox>
+
+      <div class="no-program-overlay" *ngIf="currentFile === undefined" [ngClass]="{'console-shown': !isConsoleHidden}">
+        <div  class="col-md-8 offset-md-2 col-sm-10 offset-sm-1 p-0 col-lg-6 offset-lg-3">
+          <img src="assets/lps-studio-illustration.png" class="img-fluid" alt="">
+          <p class="text-center">{{ emptyCanvasMessage }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
