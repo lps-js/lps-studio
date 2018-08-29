@@ -55,6 +55,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ipcRenderer.on('canvas:lpsErrorred', (event, arg) => {
       this.consoleLog('Error: ' + arg);
+      this.isConsoleHidden = false;
       this.isRunning = false;
     });
 
