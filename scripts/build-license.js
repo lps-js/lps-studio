@@ -8,7 +8,7 @@ const legalEagleOptions = {
   overrides: licenseOverrides,
   omitPermissive: true
 };
-const targetOutputFile = 'dist/licenses.json';
+const targetOutputFile = '_licenses.json';
 
 legalEagle(legalEagleOptions, (err, summary) => {
   if (err) {
