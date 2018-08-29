@@ -162,7 +162,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         observations.push(observation.substitute(theta));
         forEachObjectInPosition((key, obj) => {
           observation = this.LPS.literal('lpsClick(ObjectId, X, Y)');
-          console.log('CLICKED  ' + key);
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
         });
