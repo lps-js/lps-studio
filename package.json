@@ -29,7 +29,13 @@
     "electron:windows": "npm run build:prod && electron-builder build --windows",
     "electron:mac": "npm run build:prod && electron-builder build --mac",
     "test": "npm run postinstall:web && ng test",
-    "e2e": "npm run postinstall:web && ng e2e"
+    "e2e": "npm run postinstall:web && ng e2e",
+    
+    "postversion": "git push && git push --tags",
+    
+    "release:patch": "npm version patch && npm run electron:linux && npm run electron:windows && npm run electron:mac",
+    "release:minor": "npm version minor && npm run electron:linux && npm run electron:windows && npm run electron:mac",
+    "release:major": "npm version major && npm run electron:linux && npm run electron:windows && npm run electron:mac"
   },
   "dependencies": {
     "@ng-bootstrap/ng-bootstrap": "^2.2.1",
