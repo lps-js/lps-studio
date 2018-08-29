@@ -73,7 +73,6 @@ export default function createLicenseWindow() {
     if (forceCloseWindow) {
       return;
     }
-    console.log(event);
     // hide window for reuse
     event.preventDefault();
     licenseWindowSingleton.hide();
