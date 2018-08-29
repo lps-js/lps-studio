@@ -8,11 +8,17 @@ const serve = args.some(val => val === '--serve');
 
 const urlPath = '/license';
 
-const licenseDialogSize = [600, 400];
+const licenseDialogSize = [600, 600];
 
 let licenseWindowMenu = null;
 
 let licenseWindowSingleton: BrowserWindow = null;
+
+let forceCloseWindow: boolean = false;
+
+export function setForceCloseWindow() {
+  forceCloseWindow = true;
+}
 
 export default function createLicenseWindow() {
   if (licenseWindowSingleton !== null) {
@@ -64,6 +70,10 @@ export default function createLicenseWindow() {
 
   // Emitted when the window is closed.
   licenseWindowSingleton.once('close', (event) => {
+    if (forceCloseWindow) {
+      return;
+    }
+    console.log(event);
     // hide window for reuse
     event.preventDefault();
     licenseWindowSingleton.hide();

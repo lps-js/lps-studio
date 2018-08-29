@@ -2,8 +2,16 @@ import { app, Menu, MenuItemConstructorOptions, shell, BrowserWindow } from 'ele
 import createMainWindow from './createMainWindow';
 import createAboutWindow from './createAboutWindow';
 import createLicenseWindow from './createLicenseWindow';
+import { setForceCloseWindow as setForceCloseAboutWindow } from './createAboutWindow';
+import { setForceCloseWindow as setForceCloseLicenseWindow } from './createLicenseWindow';
 
 const REPORT_ISSUE_URL = 'https://github.com/mauris/lps-studio/issues';
+
+const quitApp = () => {
+  setForceCloseLicenseWindow();
+  setForceCloseAboutWindow();
+  app.quit();
+};
 
 export default function buildAboutMenu() {
   let menuTemplate: MenuItemConstructorOptions[] = [];
@@ -32,7 +40,7 @@ export default function buildAboutMenu() {
           label: 'Quit',
           accelerator: 'Cmd+Q',
           click() {
-            app.quit()
+            quitApp();
           }
         }
       ]
@@ -77,7 +85,7 @@ export default function buildAboutMenu() {
       label: 'Quit',
       accelerator: 'Alt+F4',
       click() {
-        app.quit()
+        quitApp();
       }
     });
   }

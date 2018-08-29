@@ -14,6 +14,12 @@ let aboutWindowMenu = null;
 
 let aboutWindowSingleton: BrowserWindow = null;
 
+let forceCloseWindow: boolean = false;
+
+export function setForceCloseWindow() {
+  forceCloseWindow = true;
+}
+
 export default function createAboutWindow() {
   if (aboutWindowSingleton !== null) {
     aboutWindowSingleton.show();
@@ -64,6 +70,9 @@ export default function createAboutWindow() {
 
   // Emitted when the window is closed.
   aboutWindowSingleton.on('close', (event) => {
+    if (forceCloseWindow) {
+      return;
+    }
     // hide window for reuse
     event.preventDefault();
     aboutWindowSingleton.hide();
