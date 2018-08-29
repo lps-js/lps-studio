@@ -25,15 +25,20 @@
     "electron:tsc": "tsc main.ts",
     "electron:serve": "wait-on http-get://localhost:4200/ && npm run electron:tsc && electron . --serve",
     "electron:local": "npm run build:prod && electron .",
+    
     "electron:linux": "npm run build:prod && electron-builder build --linux",
     "electron:windows": "npm run build:prod && electron-builder build --windows",
     "electron:mac": "npm run build:prod && electron-builder build --mac",
+    "electron:all": "npm run build:prod && electron-builder build --linux && electron-builder build --mac && electron-builder build --windows",
+    
     "test": "npm run postinstall:web && ng test",
     "e2e": "npm run postinstall:web && ng e2e",
+    
     "postversion": "git push && git push --tags",
-    "release:patch": "npm version patch && npm run electron:linux && npm run electron:windows && npm run electron:mac",
-    "release:minor": "npm version minor && npm run electron:linux && npm run electron:windows && npm run electron:mac",
-    "release:major": "npm version major && npm run electron:linux && npm run electron:windows && npm run electron:mac"
+    
+    "release:patch": "npm version patch && npm run electron:all",
+    "release:minor": "npm version minor && npm run electron:all",
+    "release:major": "npm version major && npm run electron:all"
   },
   "dependencies": {
     "@ng-bootstrap/ng-bootstrap": "^2.2.1",
