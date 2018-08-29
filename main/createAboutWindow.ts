@@ -10,7 +10,7 @@ const urlPath = '/about';
 
 const aboutDialogSize = [600, 400];
 
-const aboutWindowMenu = buildAboutMenu();
+let aboutWindowMenu = null;
 
 let aboutWindowSingleton: BrowserWindow = null;
 
@@ -18,6 +18,9 @@ export default function createAboutWindow() {
   if (aboutWindowSingleton !== null) {
     aboutWindowSingleton.focus();
     return;
+  }
+  if (aboutWindowMenu === null) {
+    aboutWindowMenu = buildAboutMenu();
   }
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
 
