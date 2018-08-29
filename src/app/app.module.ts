@@ -19,6 +19,7 @@ import { CanvasObjectService } from './providers/canvasObject.service';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
+import { LicenseComponent } from './components/license/license.component';
 
 import { SandboxComponent } from './components/sandbox/sandbox.component';
 
@@ -32,6 +33,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomeComponent,
     AboutComponent,
+    LicenseComponent,
     SandboxComponent
   ],
   imports: [

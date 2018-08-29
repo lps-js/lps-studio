@@ -1,0 +1,24 @@
+.title-container {
+  background: #333;
+  color: #FFF;
+  padding: 20px;
+  width: 100%;
+  height: 310px;
+  
+  & > h1.title {
+    font-size: 100px;
+  }
+}
+
+a, a:visited {
+  color: #FFF;
+  text-decoration: underline;
+  margin-right: 20px;
+}
+
+.footer-container {
+  height: 90px;
+  width: 100%;
+  padding: 20px;
+  background: #DF7F00;
+}
