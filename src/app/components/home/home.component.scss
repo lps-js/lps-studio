@@ -2,6 +2,8 @@ html, body {
   height: 100%;
 }
 
+$consoleWidth: 320px;
+
 app-root, app-home, .container-fluid, .row {
   height: 100%;
 }
@@ -18,7 +20,7 @@ app-root, app-home, .container-fluid, .row {
   }
   
   &.console-shown {
-    margin-right:320px;
+    margin-right: $consoleWidth;
   }
 }
 
@@ -27,7 +29,7 @@ app-root, app-home, .container-fluid, .row {
   z-index: 100000;
   position: absolute;
   background: #fff;
-  width: 320px;
+  width: $consoleWidth;
   height: 100%;
   border-left: 1px solid #ccc;
   font-size: 12px;
