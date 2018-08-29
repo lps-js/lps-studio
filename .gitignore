@@ -188,3 +188,5 @@ testem.log
 /e2e/*.map
 
 /main/**/*.js
+
+_licenses.json
