@@ -15,6 +15,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { ElectronService } from './providers/electron.service';
 import { CanvasObjectService } from './providers/canvasObject.service';
+import { MapToIterable } from './providers/mapToIterable.pipe';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -34,7 +35,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     HomeComponent,
     AboutComponent,
     LicenseComponent,
-    SandboxComponent
+    SandboxComponent,
+    MapToIterable
   ],
   imports: [
     BrowserModule,
