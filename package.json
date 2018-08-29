@@ -1,6 +1,6 @@
 {
   "name": "lps-studio",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Visual storytelling tool using Logic Production Systems (LPS), powered by lps.js",
   "homepage": "https://github.com/mauris/lps-studio",
   "author": {
@@ -30,9 +30,7 @@
     "electron:mac": "npm run build:prod && electron-builder build --mac",
     "test": "npm run postinstall:web && ng test",
     "e2e": "npm run postinstall:web && ng e2e",
-    
     "postversion": "git push && git push --tags",
-    
     "release:patch": "npm version patch && npm run electron:linux && npm run electron:windows && npm run electron:mac",
     "release:minor": "npm version minor && npm run electron:linux && npm run electron:windows && npm run electron:mac",
     "release:major": "npm version major && npm run electron:linux && npm run electron:windows && npm run electron:mac"
