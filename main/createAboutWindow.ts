@@ -12,17 +12,17 @@ const aboutDialogSize = [600, 400];
 
 const aboutWindowMenu = buildAboutMenu();
 
-let aboutWindowSingletonSingleton: BrowserWindow = null;
+let aboutWindowSingleton: BrowserWindow = null;
 
 export default function createAboutWindow() {
-  if (aboutWindowSingletonSingleton !== null) {
-    aboutWindowSingletonSingleton.focus();
+  if (aboutWindowSingleton !== null) {
+    aboutWindowSingleton.focus();
     return;
   }
   const screenSize = screen.getPrimaryDisplay().workAreaSize;
 
   // Create the browser window.
-  let aboutWindowSingleton = new BrowserWindow({
+  aboutWindowSingleton = new BrowserWindow({
     x: screenSize.width / 2 - aboutDialogSize[0] / 2,
     y: screenSize.height / 2 - aboutDialogSize[1] / 2,
     title: 'About LPS Studio',
