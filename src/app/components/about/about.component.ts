@@ -21,11 +21,11 @@ export class AboutComponent {
   }
 
   openLink($event: Event, link: string) {
+    $event.preventDefault();
     if (!link.startsWith('https://') && !link.startsWith('http://')) {
       return;
     }
     this.electronService.remote.shell.openExternal(link);
-    $event.preventDefault();
   }
 
   openLicenseWindow($event: Event) {
