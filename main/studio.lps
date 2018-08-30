@@ -12,3 +12,6 @@ lpsAnimateMoveObject(Id, Duration, X, Y) from T1 to T2 <-
   lpsAnimateObject(Id, Duration, [
     position(X, Y)
   ]) from T1 to T2.
+
+lpsDefineObject(Id, Type, []) <-
+  lpsDefineObject(Id, Type).
