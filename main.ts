@@ -10,17 +10,15 @@ import './main/engineManager';
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
 
-const firstRunFile = path.join(app.getPath('userData'), 'firstRun');
-const checkIfFirstRun = function () {
-  let result = fs.existsSync(firstRunFile);
-  if (result) {
-    return false;
-  }
-  fs.writeFileSync(firstRunFile, '');
-  return true;
-};
-
-const isFirstRun = checkIfFirstRun();
+// const firstRunFile = path.join(app.getPath('userData'), 'firstRun');
+// const checkIfFirstRun = function () {
+//   let result = fs.existsSync(firstRunFile);
+//   if (result) {
+//     return false;
+//   }
+//   fs.writeFileSync(firstRunFile, '');
+//   return true;
+// };
 
 ipcMain.on('app:openLicenseWindow', () => {
   createLicenseWindow();
@@ -32,6 +30,7 @@ try {
   // Some APIs can only be used after this event occurs.
   app.on('ready', () => {
     createMainWindow();
+    // const isFirstRun = checkIfFirstRun();
     // if (isFirstRun) {
     //
     // }
