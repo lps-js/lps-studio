@@ -174,7 +174,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         };
         observations.push(observation.substitute(theta));
         forEachObjectInPosition((key, obj) => {
-          observation = this.LPS.literal('lpsMousedown(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsMouseDown(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
         });
@@ -197,14 +197,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           obj.isDragEnabled = false;
         });
 
-        observation = this.LPS.literal('lpsMouseup(X, Y)');
+        observation = this.LPS.literal('lpsMouseUp(X, Y)');
         theta = {
           X: e.x,
           Y: e.y
         };
         observations.push(observation.substitute(theta));
         forEachObjectInPosition((key, obj) => {
-          observation = this.LPS.literal('lpsMouseup(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsMouseUp(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
         });
@@ -224,7 +224,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           });
         }
 
-        observation = this.LPS.literal('lpsMousemove(X, Y)');
+        observation = this.LPS.literal('lpsMouseMove(X, Y)');
         theta = {
           X: e.x,
           Y: e.y
