@@ -139,5 +139,5 @@ export default function buildAboutMenu() {
   }
   // help menu
 
-  return Menu.buildFromTemplate(menuTemplate)
+  return Menu.buildFromTemplate(menuTemplate);
 }

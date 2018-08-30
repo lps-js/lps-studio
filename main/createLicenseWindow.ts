@@ -61,6 +61,8 @@ export default function createLicenseWindow() {
   licenseWindowSingleton.on('focus', () => {
     if (process.platform === 'darwin') {
       Menu.setApplicationMenu(licenseWindowMenu);
+    } else {
+      Menu.setApplicationMenu(Menu.buildFromTemplate([]));
     }
   });
 

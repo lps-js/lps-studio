@@ -61,6 +61,8 @@ export default function createAboutWindow() {
   aboutWindowSingleton.on('focus', () => {
     if (process.platform === 'darwin') {
       Menu.setApplicationMenu(aboutWindowMenu);
+    } else {
+      Menu.setApplicationMenu(Menu.buildFromTemplate([]));
     }
   });
 
