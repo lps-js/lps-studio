@@ -191,7 +191,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           // was dragging
 
-          observation = this.LPS.literal('lpsDraggedTo(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsDragRelease(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
           obj.isDragEnabled = false;
@@ -231,7 +231,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         };
         observations.push(observation.substitute(theta));
         forEachObjectInPosition((key, obj) => {
-          observation = this.LPS.literal('lpsMousemove(ObjectId, X, Y)');
+          observation = this.LPS.literal('lpsMouseMove(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
         });
