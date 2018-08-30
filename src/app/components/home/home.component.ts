@@ -394,7 +394,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
     this.consoleLog('Observing "' + this.consoleInput + '"');
-    ipcRenderer.send('input-observe', { input: this.consoleInput, windowId: this.windowId });
+    ipcRenderer.send('lps:observe', { input: this.consoleInput, windowId: this.windowId });
     this.consoleInput = '';
   }
 
