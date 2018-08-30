@@ -1,9 +1,22 @@
+html, body {
+  height: 100%;
+}
+
+$footerHeight: 100px;
+
+app-root, app-home, .container-fluid, .row {
+  height: 100%;
+}
+
 .title-container {
   background: #333;
   color: #FFF;
   padding: 20px;
-  width: 100%;
-  height: 310px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: $footerHeight;
   
   & > h1.title {
     font-size: 100px;
@@ -17,7 +30,11 @@ a, a:visited {
 }
 
 .footer-container {
-  height: 90px;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  height: $footerHeight;
   width: 100%;
   padding: 20px;
   background: #DF7F00;
