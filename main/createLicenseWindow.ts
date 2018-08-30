@@ -62,7 +62,7 @@ export default function createLicenseWindow() {
     if (process.platform === 'darwin') {
       Menu.setApplicationMenu(licenseWindowMenu);
     } else {
-      Menu.setApplicationMenu(Menu.buildFromTemplate([]));
+      licenseWindowSingleton.setMenu(null);
     }
   });
 

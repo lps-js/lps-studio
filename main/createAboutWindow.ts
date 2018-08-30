@@ -62,7 +62,7 @@ export default function createAboutWindow() {
     if (process.platform === 'darwin') {
       Menu.setApplicationMenu(aboutWindowMenu);
     } else {
-      Menu.setApplicationMenu(Menu.buildFromTemplate([]));
+      aboutWindowSingleton.setMenu(null);
     }
   });
 
