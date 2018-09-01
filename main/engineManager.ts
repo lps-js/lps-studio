@@ -21,6 +21,7 @@ ipcMain.on('lps:start', (event, arg) => {
       return studioEngineLoader(engine, programPath, sender);
     })
     .then((engine) => {
+      let profiler = engine.getProfiler();
       engines[windowId] = engine;
       engine.on('paused', () => {
         sender.send('canvas:lpsPaused');
@@ -41,7 +42,11 @@ ipcMain.on('lps:start', (event, arg) => {
 
       engine.on('postCycle', () => {
         sender.send('canvas:lpsTimeUpdate', {
-          time: engine.getCurrentTime()
+          time: engine.getCurrentTime(),
+          numNewRules: profiler.get('lastCycleNumNewRules'),
+          numRulesFired: profiler.get('lastCycleNumFiredRules'),
+          numRulesDiscarded: profiler.get('lastCycleNumDiscardedRules'),
+          numRules: profiler.get('numRules')
         });
       });
 
