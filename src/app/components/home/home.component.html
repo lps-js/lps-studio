@@ -40,7 +40,7 @@
         </div>
         <span class="timing">{{ currentTime }}</span>
       </div>
-      <sandbox #sandbox id="sandbox" (onMouse)="handleCanvasMouseEvent($event)" (ready)="handleCanvasReady()"></sandbox>
+      <sandbox #sandbox id="sandbox" [isFrozen]="isPaused || !isRunning" (onMouse)="handleCanvasMouseEvent($event)" (ready)="handleCanvasReady()"></sandbox>
 
       <div class="no-program-overlay" *ngIf="currentFile === undefined" [ngClass]="{'console-shown': !isConsoleHidden}">
         <div  class="col-md-8 offset-md-2 col-sm-10 offset-sm-1 p-0 col-lg-6 offset-lg-3">
