@@ -13,7 +13,7 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('mainCanvas') mainCanvas: ElementRef;
   public context: CanvasRenderingContext2D;
 
-  private refreshInterval: number = 20;
+  @Input() isFrozen: boolean = false;
 
   @Input() objects: Array<CanvasObject> = new Array<CanvasObject>();
 
@@ -88,6 +88,9 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     requestAnimationFrame((ts) => {
       this.canvasDraw(ts);
     });
+    if (this.isFrozen) {
+      return;
+    }
     this.context.clearRect(0, 0, this.mainCanvas.nativeElement.width, this.mainCanvas.nativeElement.height);
     this.objects.forEach((obj) => {
       obj.draw(this.context, timestamp);
