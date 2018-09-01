@@ -5,8 +5,8 @@ export function createAnimationFuncForTuple(obj, propertyKey, target) {
   let delta1 = target[1] - obj[propertyKey][1];
   return (timeRatio: number) => {
     obj[propertyKey] = [
-      original0 + timeRatio * delta0,
-      original1 + timeRatio * delta1
+      Math.floor(original0 + timeRatio * delta0),
+      Math.floor(original1 + timeRatio * delta1)
     ];
   };
 };
@@ -15,7 +15,7 @@ export function createAnimationFuncForNumber(obj, propertyKey, target) {
   let original = obj[propertyKey];
   let delta = target - obj[propertyKey];
   return (timeRatio: number) => {
-    obj[propertyKey] = original + timeRatio * delta;
+    obj[propertyKey] = Math.floor(original + timeRatio * delta);
   };
 };
 
