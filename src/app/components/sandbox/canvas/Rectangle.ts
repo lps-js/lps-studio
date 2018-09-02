@@ -23,6 +23,7 @@ export class Rectangle implements CanvasObject {
   strokeWeight: number = 1;
   strokeStyle: string = '#000';
   fillStyle: string = '#FFF';
+  zIndex: number = 0;
 
   private animations: Array<Function> = [];
 

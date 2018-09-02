@@ -19,6 +19,7 @@ export class Text implements CanvasObject {
 
   isHidden: boolean = false;
   isDragEnabled: boolean = false;
+  zIndex: number = 0;
 
   private animations: Array<Function> = [];
 

@@ -6,6 +6,7 @@ import { CanvasObject } from '../sandbox/canvas/CanvasObject';
 import { ElectronService } from '../../providers/electron.service';
 import { CanvasObjectService } from '../../providers/canvasObject.service';
 import { OpenDialogOptions } from 'electron';
+import canvasObjectSorter from '../../providers/canvasObjectSorter';
 import * as path from 'path';
 
 const timebarHeight = 45; // px
@@ -60,6 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     ipcRenderer.on('canvas:lpsStart', (event, arg) => {
       this.isRunning = true;
+      this.sandbox.objects.sort(canvasObjectSorter);
     });
 
     ipcRenderer.on('canvas:lpsErrorred', (event, arg) => {
@@ -126,6 +128,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         return;
       }
       this.canvasObjectService.updateProperties(obj, arg.properties);
+      this.sandbox.objects.sort(canvasObjectSorter);
     });
 
     ipcRenderer.on('canvas:animateObject', (event, arg) => {

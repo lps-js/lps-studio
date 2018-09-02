@@ -13,6 +13,7 @@ const animatablePropertiesNumber = [
 export class Circle implements CanvasObject {
   position: [number, number] = [0, 0];
   isHidden: boolean = false;
+  zIndex: number = 0;
   isDragEnabled: boolean = false;
 
   private _radius: number = 0;

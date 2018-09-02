@@ -18,6 +18,7 @@ export class Square implements CanvasObject {
 
   isHidden: boolean = false;
   isDragEnabled: boolean = false;
+  zIndex: number = 0;
 
   strokeDash: Array<number> = [];
   strokeWeight: number = 1;

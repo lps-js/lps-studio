@@ -16,6 +16,7 @@ export class Image implements CanvasObject {
 
   isHidden: boolean = false;
   isDragEnabled: boolean = false;
+  zIndex: number = 0;
 
   flipHorizontal: boolean = false;
   flipVertical: boolean = false;
@@ -108,7 +109,8 @@ export class Image implements CanvasObject {
     });
     this.animations = newAnimations;
 
-    if (this.image === null) {
+    if (this.image === undefined || this.image === null) {
+      console.log('Invalid image field given')
       return;
     }
 
