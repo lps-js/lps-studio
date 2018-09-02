@@ -12,9 +12,9 @@
           <div class="single-statistics-chart">
             <div
                 class="single-statistics-bar-outer"
-                *ngFor="let num of statisticsHistory[statsKey]"
+                *ngFor="let num of statisticsHistory[statsKey]; let i = index"
                 [ngStyle]="{'padding-top.px': (1 - (num / statisticsHistoryMax[statsKey])) * 40}">
-              <div class="single-statistics-bar-inner" [ngStyle]="{'height.px': num / statisticsHistoryMax[statsKey] * 40}"></div>
+              <div class="single-statistics-bar-inner" [ngClass]="'bar-' + i" [ngStyle]="{'height.px': num / statisticsHistoryMax[statsKey] * 40}"></div>
             </div>
           </div>
         </div>

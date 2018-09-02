@@ -61,8 +61,38 @@ app-root, app-home, .container-fluid, .row {
     height: 40px;
     width: 5px;
     .single-statistics-bar-inner {
-      background: #DDD;
       width: 5px;
+      
+      &.bar-0 { background: rgba(120, 200, 120, 0.2); }
+      &.bar-1 { background: rgba(120, 200, 120, 0.225); }
+      &.bar-2 { background: rgba(120, 200, 120, 0.25); }
+      &.bar-3 { background: rgba(120, 200, 120, 0.275); }
+      &.bar-4 { background: rgba(120, 200, 120, 0.30); }
+      &.bar-5 { background: rgba(120, 200, 120, 0.325); }
+      &.bar-6 { background: rgba(120, 200, 120, 0.35); }
+      &.bar-7 { background: rgba(120, 200, 120, 0.375); }
+      &.bar-8 { background: rgba(120, 200, 120, 0.4); }
+      &.bar-9 { background: rgba(120, 200, 120, 0.425); }
+      &.bar-10 { background: rgba(120, 200, 120, 0.45); }
+      &.bar-11 { background: rgba(120, 200, 120, 0.475); }
+      &.bar-12 { background: rgba(120, 200, 120, 0.5); }
+      &.bar-13 { background: rgba(120, 200, 120, 0.525); }
+      &.bar-14 { background: rgba(120, 200, 120, 0.55); }
+      &.bar-15 { background: rgba(120, 200, 120, 0.575); }
+      &.bar-16 { background: rgba(120, 200, 120, 0.6); }
+      &.bar-17 { background: rgba(120, 200, 120, 0.625); }
+      &.bar-18 { background: rgba(120, 200, 120, 0.65); }
+      &.bar-19 { background: rgba(120, 200, 120, 0.675); }
+      &.bar-20 { background: rgba(120, 200, 120, 0.7); }
+      &.bar-21 { background: rgba(120, 200, 120, 0.725); }
+      &.bar-22 { background: rgba(120, 200, 120, 0.75); }
+      &.bar-23 { background: rgba(120, 200, 120, 0.775); }
+      &.bar-24 { background: rgba(120, 200, 120, 0.8); }
+      &.bar-25 { background: rgba(120, 200, 120, 0.825); }
+      &.bar-26 { background: rgba(120, 200, 120, 0.85); }
+      &.bar-27 { background: rgba(120, 200, 120, 0.875); }
+      &.bar-28 { background: rgba(120, 200, 120, 0.9); }
+      &.bar-29 { background: rgba(120, 200, 120, 1); }
     }
   }
 }
