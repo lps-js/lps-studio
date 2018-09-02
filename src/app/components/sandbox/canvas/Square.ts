@@ -52,18 +52,20 @@ export class Square implements CanvasObject {
     this.updatePositionSize();
   }
 
-  draw(context: CanvasRenderingContext2D, timestamp: number) {
+  draw(context: CanvasRenderingContext2D, isFrozen: boolean, timestamp: number) {
     if (this.isHidden) {
       return;
     }
-    let newAnimations = [];
-    this.animations.forEach((animation) => {
-      let result = animation(timestamp);
-      if (result !== false) {
-        newAnimations.push(animation);
-      }
-    });
-    this.animations = newAnimations;
+    if (!isFrozen) {
+      let newAnimations = [];
+      this.animations.forEach((animation) => {
+        let result = animation(timestamp);
+        if (result !== false) {
+          newAnimations.push(animation);
+        }
+      });
+      this.animations = newAnimations;
+    }
 
     context.beginPath();
     context.setLineDash(this.strokeDash);

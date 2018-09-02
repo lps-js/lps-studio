@@ -23,19 +23,20 @@ export class Text implements CanvasObject {
 
   private animations: Array<Function> = [];
 
-  draw(context: CanvasRenderingContext2D, timestamp: number) {
+  draw(context: CanvasRenderingContext2D, isFrozen: boolean, timestamp: number) {
     if (this.isHidden) {
       return;
     }
-    let newAnimations = [];
-    this.animations.forEach((animation) => {
-      let result = animation(timestamp);
-      if (result !== false) {
-        newAnimations.push(animation);
-      }
-    });
-
-    this.animations = newAnimations;
+    if (!isFrozen) {
+      let newAnimations = [];
+      this.animations.forEach((animation) => {
+        let result = animation(timestamp);
+        if (result !== false) {
+          newAnimations.push(animation);
+        }
+      });
+      this.animations = newAnimations;
+    }
 
     context.fillStyle = this.fillStyle;
     context.strokeStyle = this.strokeStyle;

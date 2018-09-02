@@ -96,18 +96,20 @@ export class Image implements CanvasObject {
     return offscreenCanvas;
   }
 
-  draw(context: CanvasRenderingContext2D, timestamp: number) {
+  draw(context: CanvasRenderingContext2D, isFrozen: boolean, timestamp: number) {
     if (this.isHidden) {
       return;
     }
-    let newAnimations = [];
-    this.animations.forEach((animation) => {
-      let result = animation(timestamp);
-      if (result !== false) {
-        newAnimations.push(animation);
-      }
-    });
-    this.animations = newAnimations;
+    if (!isFrozen) {
+      let newAnimations = [];
+      this.animations.forEach((animation) => {
+        let result = animation(timestamp);
+        if (result !== false) {
+          newAnimations.push(animation);
+        }
+      });
+      this.animations = newAnimations;
+    }
 
     if (this.image === undefined || this.image === null) {
       console.log('Invalid image field given')
