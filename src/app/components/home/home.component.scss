@@ -24,6 +24,49 @@ app-root, app-home, .container-fluid, .row {
   }
 }
 
+.statistics-view {
+  z-index: 1000000;
+  width: $consoleWidth;
+  background:#444;
+  position: absolute;
+  top: 0;
+  right: 0;
+  
+  .single-statistics-view {
+    clear: both;
+    margin: 2px;
+  }
+  
+  .single-statistics-view {
+    font-size: 8px;
+    color:#CCC;
+  }
+  
+  .single-statistics-number {
+    float: left;
+    color: #EEE;
+    font-size: 20px;
+    padding: 5px;
+    width: 50px;
+    overflow:hidden;
+  }
+  
+  .single-statistics-chart {
+    height: 40px;
+  }
+  
+  .single-statistics-bar-outer {
+    float: left;
+    margin: 1px;
+    height: 40px;
+    width: 5px;
+    .single-statistics-bar-inner {
+      background: #DDD;
+      width: 5px;
+    }
+  }
+}
+
 .console-view {
   right: 0;
   z-index: 100000;

@@ -15,7 +15,9 @@ const emptyScreenMessages = [
   'Open a LPS Studio program using the folder icon on the toolbar.',
   'What story will you tell today?',
   '"Life is either a daring adventure or nothing." - Helen Keller'
-]
+];
+
+const maxNumberOfHistory = 30;
 
 @Component({
   templateUrl: './home.component.html',
@@ -35,6 +37,22 @@ export class HomeComponent implements OnInit, OnDestroy {
   isStopping: boolean = false;
   isMouseDown: boolean = false;
   isConsoleHidden: boolean = false;
+  isStatisticsHidden: boolean = false;
+
+  statisticsKeys: Array<string> = [];
+  statistics: any = {};
+  statisticsHistory: any = {};
+  statisticsHistoryMax: any = {};
+
+  statisticsLabel: any = {
+    numRules: 'Current Rules',
+    numNewRules: 'New Rules',
+    numRulesDiscarded: 'Discarded Rules',
+    numRulesFired: 'Newly Fired Rules',
+    numGoals: 'Unresolved Goals',
+    resolvedGoals: 'Resolved Goals',
+    failedGoals: 'Failed Goals'
+  };
 
   emptyCanvasMessage: string = emptyScreenMessages[Math.floor(Math.random() * emptyScreenMessages.length)];
 
@@ -51,6 +69,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ) {
     this.LPS = this.electronService.remote.require('lps');
     this.windowId = this.electronService.remote.getCurrentWindow().id;
+    this.statisticsKeys = Object.keys(this.statisticsLabel);
   }
 
   ngOnInit() {
@@ -60,6 +79,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     ipcRenderer.on('canvas:lpsStart', (event, arg) => {
+      this.statistics = {};
+      this.statisticsHistory = {};
+      this.statisticsHistoryMax = {};
+
       this.isRunning = true;
       this.sandbox.objects.sort(canvasObjectSorter);
     });
@@ -145,6 +168,29 @@ export class HomeComponent implements OnInit, OnDestroy {
     ipcRenderer.on('canvas:lpsTimeUpdate', (event, arg) => {
       let time = arg.time;
       this.currentTime = time;
+      this.statistics = arg;
+      Object.keys(arg).forEach((key) => {
+        if (key === 'time') {
+          return;
+        }
+        let value = arg[key];
+        let history = this.statisticsHistory[key];
+        if (history === undefined) {
+          history = [];
+          this.statisticsHistory[key] = history;
+        }
+
+        history.push(value);
+        if (history.length > maxNumberOfHistory) {
+          history.shift();
+        }
+        this.statisticsHistoryMax[key] = history[0];
+        history.forEach((v) => {
+          if (v > this.statisticsHistoryMax[key]) {
+            this.statisticsHistoryMax[key] = v;
+          }
+        });
+      });
       this.consoleLog('Time ' + time);
     });
 
@@ -390,6 +436,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   toggleConsoleView() {
     this.isConsoleHidden = !this.isConsoleHidden;
+  }
+
+  toggleStatisticsView() {
+    this.isStatisticsHidden = !this.isStatisticsHidden;
   }
 
   ngOnDestroy() {

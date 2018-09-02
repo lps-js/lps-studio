@@ -1,17 +1,35 @@
 <div class="container-fluid p-0 dark-theme">
   <div class="row m-0">
     <div class="console-view" [ngClass]="{'d-none': isConsoleHidden}">
-      <div class="console-output" #consoleOutput>
+      <div class="statistics-view" [ngClass]="{'d-none': isStatisticsHidden}">
+        <div class="single-statistics-view" *ngFor="let statsKey of statisticsKeys">
+          <div class="single-statistics-label">
+            {{ statisticsLabel[statsKey] }}
+          </div>
+          <div class="single-statistics-number">
+            {{ statistics[statsKey] }}
+          </div>
+          <div class="single-statistics-chart">
+            <div
+                class="single-statistics-bar-outer"
+                *ngFor="let num of statisticsHistory[statsKey]"
+                [ngStyle]="{'padding-top.px': (1 - (num / statisticsHistoryMax[statsKey])) * 40}">
+              <div class="single-statistics-bar-inner" [ngStyle]="{'height.px': num / statisticsHistoryMax[statsKey] * 40}"></div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- statistics-view -->
+      <div class="console-output" #consoleOutput [ngStyle]="{'padding-top.px': isStatisticsHidden ? 0 : statisticsKeys.length * 55 }">
         <div #consoleOutputInner class="console-output-inner">
           <div *ngFor="let message of messages">
             <p>{{ message }}</p>
           </div>
         </div>
-      </div>
+      </div> <!-- console-output -->
       <div class="console-input">
         <input type="text" [(ngModel)]="consoleInput" (keypress)="consoleInputKeypress($event)" [disabled]="!isRunning" placeholder="Enter observations here...">
       </div>
-    </div>
+    </div>  <!-- console-view -->
     <div class="col-md-12 p-0">
       <div class="timebar" [ngClass]="{'console-shown': !isConsoleHidden}">
         <div class="float-right">
@@ -30,6 +48,9 @@
             </button>
             <button class="btn btn-dark btn-sm" *ngIf="!isRunning && currentFile !== undefined" (click)="requestRestart()">
               <i class="fa fa-refresh"></i>
+            </button>
+            <button class="btn btn-dark btn-sm" *ngIf="!isConsoleHidden" (click)="toggleStatisticsView()">
+              <i class="fa fa-bar-chart"></i>
             </button>
             <button class="btn btn-dark btn-sm" (click)="toggleConsoleView()">
               <i class="fa fa-chevron-right" *ngIf="!isConsoleHidden"></i>
