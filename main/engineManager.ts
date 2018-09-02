@@ -13,6 +13,9 @@ ipcMain.on('lps:start', (event, arg) => {
 
   let onEngineHalted = () => {
     delete engines[windowId];
+    if (sender.isDestroyed()) {
+      return;
+    }
     sender.send('canvas:lpsHalted');
   };
 
@@ -46,7 +49,10 @@ ipcMain.on('lps:start', (event, arg) => {
           numNewRules: profiler.get('lastCycleNumNewRules'),
           numRulesFired: profiler.get('lastCycleNumFiredRules'),
           numRulesDiscarded: profiler.get('lastCycleNumDiscardedRules'),
-          numRules: profiler.get('numRules')
+          numRules: profiler.get('numRules'),
+          numGoals: profiler.get('lastCycleNumUnresolvedGoals'),
+          resolvedGoals: profiler.get('lastCycleNumResolvedGoals'),
+          failedGoals: profiler.get('lastCycleNumFailedGoals')
         });
       });
 
@@ -62,7 +68,7 @@ ipcMain.on('lps:start', (event, arg) => {
     });
 });
 
-let getEngine = function getEngine(arg) {
+export function getEngine(arg) {
   let engine = engines[arg.windowId];
   if (engine === undefined) {
     return null;
