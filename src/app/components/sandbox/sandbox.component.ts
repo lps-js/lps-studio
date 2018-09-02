@@ -88,7 +88,8 @@ export class SandboxComponent implements OnInit, AfterViewInit, OnDestroy {
     requestAnimationFrame((ts) => {
       this.canvasDraw(ts);
     });
-    this.context.clearRect(0, 0, this.mainCanvas.nativeElement.width, this.mainCanvas.nativeElement.height);
+
+    this.mainCanvas.nativeElement.width = this.mainCanvas.nativeElement.width;
     this.objects.forEach((obj) => {
       obj.draw(this.context, this.isFrozen, timestamp);
     });
