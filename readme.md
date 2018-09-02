@@ -1,6 +1,8 @@
 # LPS Studio
 
-<p align="center">![Logo](src/favicon.256x256.png)</p>
+<p align="center">
+<img src="src/favicon.256x256.png" alt="LPS Studio" width="256" height="256" />
+</p>
 
 LPS Studio is a visualisation and simulation tool for running LPS programs using the [lps.js](https://github.com/mauris/lps.js) interpreter, built using Electron framework and Angular.
 
