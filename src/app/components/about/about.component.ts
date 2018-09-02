@@ -4,6 +4,7 @@ import { ipcRenderer } from 'electron';
 import { Title } from '@angular/platform-browser';
 import * as path from 'path';
 const metadata = require('../../../../package.json');
+const lpsMetadata = require('../../../../node_modules/lps/package.json');
 
 @Component({
   templateUrl: './about.component.html',
@@ -12,6 +13,7 @@ const metadata = require('../../../../package.json');
 export class AboutComponent {
   // app version
   version: string = metadata.version;
+  lpsVersion: string = lpsMetadata.version;
 
   constructor(
     private electronService: ElectronService,
