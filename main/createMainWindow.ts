@@ -2,11 +2,13 @@ import { app, Menu, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import buildMainMenu from './buildMainMenu';
+import buildNonMainWindowMenu from './buildAboutMenu';
 
 const args = process.argv.slice(1);
 const serve = args.some(val => val === '--serve');
 
 const mainWindowMenu = buildMainMenu();
+const nonMainWindowMenu = buildNonMainWindowMenu();
 
 let numOfMainWindow = 0;
 
@@ -44,8 +46,11 @@ export default function createMainWindow() {
   }
 
   window.on('focus', () => {
-    Menu.setApplicationMenu(mainWindowMenu);
+    if (process.platform === 'darwin') {
+      Menu.setApplicationMenu(mainWindowMenu);
+    }
   });
+  window.setMenu(mainWindowMenu);
 
   window.once('ready-to-show', () => {
     window.show();
@@ -62,5 +67,9 @@ export default function createMainWindow() {
     // when you should delete the corresponding element.
     window = null;
     numOfMainWindow -= 1;
+
+    if (process.platform === 'darwin') {
+      Menu.setApplicationMenu(nonMainWindowMenu);
+    }
   });
 }
