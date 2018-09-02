@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { ipcMain, BrowserWindow } from 'electron';
 import studioEngineLoader from './studioEngineLoader';
 import * as LPS from 'lps';
 import * as path from 'path';
@@ -54,8 +54,7 @@ ipcMain.on('lps:start', (event, arg) => {
         onEngineHalted();
       });
 
-      sender.send('canvas:lpsStart', '');
-      engine.run();
+      sender.send('canvas:waitImagesLoaded');
     })
     .catch((err) => {
       sender.send('canvas:lpsErrorred', err.message);
@@ -69,7 +68,17 @@ let getEngine = function getEngine(arg) {
     return null;
   }
   return engine;
-}
+};
+
+ipcMain.on('lps:canvasImagesLoaded', (event, arg) => {
+  let engine = getEngine(arg);
+  if (engine === null) {
+    return;
+  }
+  let window = BrowserWindow.fromId(arg.windowId);
+  window.webContents.send('canvas:lpsStart');
+  engine.run();
+});
 
 ipcMain.on('lps:halt', (event, arg) => {
   let engine = getEngine(arg);

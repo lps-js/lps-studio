@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    let imageLoadingPromises = [];
     ipcRenderer.on('canvas:openFile', (event, arg) => {
       this.requestOpenFile();
     });
@@ -80,14 +81,28 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     ipcRenderer.on('canvas:loadImage', (event, arg) => {
-      let image = this.canvasObjectService.addImage(arg.id, arg.url);
-      image.onerror = () => {
-        this.sandbox.objects.splice(0, this.sandbox.objects.length);
-        this.canvasObjectService.removeImage(arg.id);
-        this.requestStop();
-        this.consoleLog('Error: Unable to load image ' + arg.id + ' from ' + arg.url);
-      };
+      let promise = new Promise((resolve, reject) => {
+        let image = this.canvasObjectService.addImage(arg.id, arg.url);
+        image.onload = () => {
+          resolve();
+        }
+        image.onerror = () => {
+          this.sandbox.objects.splice(0, this.sandbox.objects.length);
+          this.canvasObjectService.removeImage(arg.id);
+          this.requestStop();
+          this.consoleLog('Error: Unable to load image ' + arg.id + ' from ' + arg.url);
+          reject();
+        };
+      });
+      imageLoadingPromises.push(promise);
     });
+
+    ipcRenderer.on('canvas:waitImagesLoaded', (event, arg) => {
+      Promise.all(imageLoadingPromises)
+        .then(() => {
+          ipcRenderer.send('lps:canvasImagesLoaded', { windowId: this.windowId });
+        });
+    })
 
     ipcRenderer.on('canvas:defineObject', (event, arg) => {
       let obj = this.canvasObjectService.buildObject(arg);
