@@ -4,7 +4,9 @@
 <img src="src/favicon.256x256.png" alt="LPS Studio" width="256" height="256" />
 </p>
 
-LPS Studio is a visualisation and simulation tool for running LPS programs using the [lps.js](https://github.com/mauris/lps.js) interpreter, built using Electron framework and Angular.
+LPS Studio is an interactive storytelling tool for visualisng Logic Production System (LPS) programs using the [lps.js](https://github.com/mauris/lps.js) interpreter on top of using Electron and Angular frameworks. 
+
+Standalone and self-contained installers for various platforms are available in the [LPS Studio Releases page](https://github.com/mauris/lps-studio/releases).
 
 ![Screenshot](docs/images/lps-studio-screenshot.png)
 
@@ -22,13 +24,16 @@ Once all dependencies are installed, you can run an instance of LPS Studio by ru
 npm run electron:local
 ```
 
+If incompatible Node.js or npm version warnings show up, follow the instructions given and update your Node.js / npm as required. Angular compilation requires at least Node.js v8.9 or newer.
+
 ## Packaging
 
 To package LPS Studio for distribution, you will need to run one of the following commands:
 
-- For Windows: `npm run electron:windows`
-- For macOS: `npm run electron:mac`
+- For Windows (`msi` and Setup): `npm run electron:windows`
+- For macOS (DMG): `npm run electron:mac`
 - For Linux (AppImage and Debian): `npm run electron:linux`
+- For all three paltforms: `npm run electron:all`
 
 ## License
 
