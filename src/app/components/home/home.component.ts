@@ -130,6 +130,11 @@ export class HomeComponent implements OnInit, OnDestroy {
     })
 
     ipcRenderer.on('canvas:defineObject', (event, arg) => {
+      if (this.canvasObjectService.getObject(arg.id)) {
+        this.requestStop();
+        this.consoleLog('Error: Duplicated object identifier given for ' + arg.id);
+        return;
+      }
       let obj = this.canvasObjectService.buildObject(arg);
       if (obj === null) {
         this.requestStop();
