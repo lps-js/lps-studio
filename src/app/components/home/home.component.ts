@@ -236,7 +236,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
         break;
       case 'mousedown':
-        observation = this.LPS.literal('lpsMousedown(X, Y)');
+        observation = this.LPS.literal('lpsMouseDown(X, Y)');
         theta = {
           X: e.x,
           Y: e.y
