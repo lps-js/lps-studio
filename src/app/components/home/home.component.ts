@@ -263,7 +263,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           observation = this.LPS.literal('lpsDragRelease(ObjectId, X, Y)');
           theta.ObjectId = key;
           observations.push(observation.substitute(theta));
-          obj.isDragEnabled = false;
+          obj.endDrag([e.x, e.y]);
         });
 
         observation = this.LPS.literal('lpsMouseUp(X, Y)');
@@ -285,11 +285,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             if (!obj.isDragEnabled) {
               return;
             }
-            obj.animations.push(() => {
-              obj.x = e.x;
-              obj.y = e.y;
-              return false;
-            });
+            obj.handleDrag([e.x, e.y]);
           });
         }
 

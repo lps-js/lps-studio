@@ -23,6 +23,8 @@ export class Text implements CanvasObject {
 
   private animations: Array<Function> = [];
 
+  private dragOffset: [number, number] = null;
+
   draw(context: CanvasRenderingContext2D, isFrozen: boolean, timestamp: number) {
     if (this.isHidden) {
       return;
@@ -62,5 +64,28 @@ export class Text implements CanvasObject {
   isPositionHit(posX: number, posY: number) {
     // not supporting clicks on text object
     return false;
+  }
+
+  handleDrag(mousePosition: [number, number]) {
+    if (this.dragOffset === null) {
+      this.dragOffset = [
+        mousePosition[0] - this.position[0],
+        mousePosition[1] - this.position[1]
+      ];
+      return;
+    }
+    this.position = [
+      mousePosition[0] - this.dragOffset[0],
+      mousePosition[1] - this.dragOffset[1]
+    ];
+  }
+
+  endDrag(mousePosition: [number, number]) {
+    this.position = [
+      mousePosition[0] - this.dragOffset[0],
+      mousePosition[1] - this.dragOffset[1]
+    ];
+    this.dragOffset = null;
+    this.isDragEnabled = false;
   }
 }

@@ -66,4 +66,12 @@ export class Line implements CanvasObject {
     // not supporting clicks on line object
     return false;
   }
+
+  handleDrag(mousePosition: [number, number]) {
+
+  }
+
+  endDrag(mousePosition: [number, number]) {
+    this.isDragEnabled = false;
+  }
 }

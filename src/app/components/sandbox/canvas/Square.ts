@@ -27,6 +27,8 @@ export class Square implements CanvasObject {
 
   private animations: Array<Function> = [];
 
+  private dragOffset: [number, number] = null;
+
   private updatePositionSize() {
     this._canvasPosition[0] = this._position[0] - this._size / 2;
     this._canvasPosition[1] = this._position[1] - this._size / 2;
@@ -108,5 +110,28 @@ export class Square implements CanvasObject {
       && posX <= this._rectBottomRight[0]
       && posY >= this._canvasPosition[1]
       && posY <= this._rectBottomRight[1];
+  }
+
+  handleDrag(mousePosition: [number, number]) {
+    if (this.dragOffset === null) {
+      this.dragOffset = [
+        mousePosition[0] - this.position[0],
+        mousePosition[1] - this.position[1]
+      ];
+      return;
+    }
+    this.position = [
+      mousePosition[0] - this.dragOffset[0],
+      mousePosition[1] - this.dragOffset[1]
+    ];
+  }
+
+  endDrag(mousePosition: [number, number]) {
+    this.position = [
+      mousePosition[0] - this.dragOffset[0],
+      mousePosition[1] - this.dragOffset[1]
+    ];
+    this.dragOffset = null;
+    this.isDragEnabled = false;
   }
 }

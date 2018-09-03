@@ -16,6 +16,8 @@ export class Circle implements CanvasObject {
   zIndex: number = 0;
   isDragEnabled: boolean = false;
 
+  private dragOffset: [number, number] = null;
+
   private _radius: number = 0;
   private _radius2: number = 0;
   strokeDash: Array<number> = [];
@@ -89,5 +91,28 @@ export class Circle implements CanvasObject {
     let dy = posY - this.position[1];
     let d = dx * dx + dy * dy;
     return d < this._radius2;
+  }
+
+  handleDrag(mousePosition: [number, number]) {
+    if (this.dragOffset === null) {
+      this.dragOffset = [
+        mousePosition[0] - this.position[0],
+        mousePosition[1] - this.position[1]
+      ];
+      return;
+    }
+    this.position = [
+      mousePosition[0] - this.dragOffset[0],
+      mousePosition[1] - this.dragOffset[1]
+    ];
+  }
+
+  endDrag(mousePosition: [number, number]) {
+    this.position = [
+      mousePosition[0] - this.dragOffset[0],
+      mousePosition[1] - this.dragOffset[1]
+    ];
+    this.dragOffset = null;
+    this.isDragEnabled = false;
   }
 }
