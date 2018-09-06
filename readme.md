@@ -8,7 +8,7 @@ LPS Studio is an interactive storytelling tool for visualisng Logic Production S
 
 Standalone and self-contained installers for various platforms are available in the [LPS Studio Releases page](https://github.com/mauris/lps-studio/releases).
 
-![Screenshot](docs/images/lps-studio-screenshot.png)
+![LPS Studio](docs/images/splash.gif)
 
 ## Setup
 
