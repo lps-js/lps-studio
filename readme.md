@@ -4,6 +4,8 @@
 <img src="src/favicon.256x256.png" alt="LPS Studio" width="256" height="256" />
 </p>
 
+![LPS Studio Dependencies](https://img.shields.io/david/mauris/lps-studio.svg)
+
 LPS Studio is an interactive storytelling tool for visualisng Logic Production System (LPS) programs using the [lps.js](https://github.com/mauris/lps.js) interpreter on top of using Electron and Angular frameworks. 
 
 Standalone and self-contained installers for various platforms are available in the [LPS Studio Releases page](https://github.com/mauris/lps-studio/releases).
