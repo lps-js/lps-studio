@@ -151,6 +151,11 @@ app-root, app-home, .container-fluid, .row {
 .console-output {
   color: #333;
   background: #efefef;
+  
+  pre {
+    white-space: pre-wrap;
+    word-break: keep-all;
+  }
 }
 
 .dark-theme {
@@ -160,6 +165,11 @@ app-root, app-home, .container-fluid, .row {
     .console-output {
       background: #333;
       color: #efefef;
+      
+      pre {
+        color: #efefef;
+        
+      }
     }
   }
 }

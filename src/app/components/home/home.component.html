@@ -22,7 +22,7 @@
       <div class="console-output" #consoleOutput [ngStyle]="{'padding-top.px': isStatisticsHidden ? 0 : statisticsKeys.length * 55 }">
         <div #consoleOutputInner class="console-output-inner">
           <div *ngFor="let message of messages">
-            <p>{{ message }}</p>
+            <pre [innerHTML]="message | ansi"></pre>
           </div>
         </div>
       </div> <!-- console-output -->
