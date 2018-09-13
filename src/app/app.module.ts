@@ -24,6 +24,8 @@ import { LicenseComponent } from './components/license/license.component';
 
 import { SandboxComponent } from './components/sandbox/sandbox.component';
 
+import { AnsiHtmlPipe } from './providers/AnsiHtmlPipe';
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -36,7 +38,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AboutComponent,
     LicenseComponent,
     SandboxComponent,
-    MapToIterable
+    MapToIterable,
+    AnsiHtmlPipe
   ],
   imports: [
     BrowserModule,
