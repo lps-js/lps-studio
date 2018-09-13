@@ -1,6 +1,6 @@
 {
   "name": "lps-studio",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Visual storytelling tool using Logic Production Systems (LPS), powered by lps.js",
   "homepage": "https://github.com/mauris/lps-studio",
   "author": {
