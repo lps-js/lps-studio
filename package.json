@@ -43,7 +43,7 @@
     "es6-promise": "^4.2.4",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
-    "lps": "^1.0.16",
+    "lps": "^1.0.18",
     "popper.js": "^1.14.3"
   },
   "devDependencies": {
