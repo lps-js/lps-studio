@@ -1,18 +1,18 @@
 # LPS Studio
 
 <p align="center">
-<img src="src/favicon.256x256.png" alt="LPS Studio" width="256" height="256" />
+<a href="https://lps.js.org/"><img src="src/favicon.256x256.png" alt="LPS Studio" width="256" height="256" /></a>
 </p>
 
-![LPS Studio Dependencies](https://img.shields.io/david/mauris/lps-studio.svg)
+[![LPS Studio Dependencies](https://img.shields.io/david/mauris/lps-studio.svg)](https://david-dm.org/mauris/lps-studio)
 
-LPS Studio is an interactive storytelling tool for visualisng Logic Production System (LPS) programs using the [lps.js](https://github.com/mauris/lps.js) interpreter on top of using Electron and Angular frameworks. 
+LPS Studio is an interactive storytelling tool for visualising Logic Production System (LPS) programs using the [lps.js](https://github.com/mauris/lps.js) interpreter on top of using Electron and Angular frameworks. 
 
-Standalone and self-contained installers for various platforms are available in the [LPS Studio Releases page](https://github.com/mauris/lps-studio/releases).
+Self-contained installers of LPS Studio for various platforms are available in the [Releases](https://github.com/mauris/lps-studio/releases) page.
 
 ![LPS Studio](docs/images/splash.gif)
 
-## Setup
+## Development Setup
 
 To setup for development, ensure you have Node.js and npm installed on your system. After cloning this repository, install all dependencies using:
 
