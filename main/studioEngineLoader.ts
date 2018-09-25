@@ -2,6 +2,7 @@ import * as LPS from 'lps';
 import * as path from 'path';
 import * as fs from 'fs';
 import { Promise } from 'es6-promise';
+import { shell } from 'electron';
 
 import { studioModule } from './studioModule';
 
@@ -88,6 +89,11 @@ export default function studioEngineLoader(engine, programPath, sender) {
       properties: processedProperties
     };
     sender.send('canvas:animateObject', data);
+    return [ { theta: {} } ];
+  });
+
+  engine.define('lpsOpenUrl', (url) => {
+    shell.openExternal(url.evaluate());
     return [ { theta: {} } ];
   });
 
