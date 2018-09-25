@@ -1,5 +1,4 @@
 import * as LPS from 'lps';
-import * as path from 'path';
 import { Promise } from 'es6-promise';
 
 let studioProgramCached = null;

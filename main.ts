@@ -1,8 +1,4 @@
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
-import * as path from 'path';
-import * as fs from 'fs';
-import * as url from 'url';
-import * as LPS from 'lps';
+import { app, ipcMain } from 'electron';
 import createMainWindow from './main/createMainWindow';
 import { getNumOfMainWindow } from './main/createMainWindow';
 import createLicenseWindow from './main/createLicenseWindow';
